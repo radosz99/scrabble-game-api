@@ -1,0 +1,9 @@
+START_X = 32
+START_Y = 32
+
+FRAME_THICKNESS = 1
+
+CELL_SIZE = 46
+
+# 80, 33 = 1, 0
+# 127, 80 = 2, 1
