@@ -1,10 +1,18 @@
-def save_readme_for_game(game):
+def save_readme_for_game(game, repository_path):
     with open(f"resources/readme_{game.token}.txt", "w") as f:
-        f.write(get_readme_for_game(game))
+        f.write(get_readme_for_game(game, repository_path))
 
 
-def get_readme_for_game(game):
+def get_readme_for_game(game, repository_path):
     readme = """
+# Board
+
+<p align="center">
+"""
+    readme += f"<img src=\"https://raw.githubusercontent.com/{repository_path}/main/board.png\" width=70% alt=\"Img\"/>"
+    readme += """
+    </p>
+    
 # Last moves
 
 | Id | Move | Created words | Date | Points | Player | 

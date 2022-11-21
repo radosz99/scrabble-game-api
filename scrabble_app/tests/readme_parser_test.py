@@ -23,7 +23,7 @@ class Testing(unittest.TestCase):
         game = Game(token=token, debug=True)
         make_move(game, "7:G:ab")
         make_move(game, "7:G:abp")
-        print(readme_parser.get_readme_for_game(game))
+        print(readme_parser.get_readme_for_game(game, "radosz99/test_repo"))
 
 
 if __name__ == "__main__":
