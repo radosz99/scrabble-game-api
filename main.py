@@ -53,9 +53,9 @@ async def get_rack_image(game_token):
 
 
 @app.get("/readme/{game_token}")
-async def get_readme(game_token):
+async def get_readme(game_token, repository_path: str = "radosz99/radosz99"):
     game = get_game_via_token(game_token)
-    readme_parser.save_readme_for_game(game)
+    readme_parser.save_readme_for_game(game, repository_path)
     return FileResponse(f"resources/readme_{game.token}.txt")
 
 
