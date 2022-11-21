@@ -12,10 +12,10 @@ app = FastAPI()
 games = []
 
 
-game = Game(token='DEBUG_TOKEN', debug=True)
-game.make_move("7:G:ab")
-game.make_move("7:G:abp")
-games.append(game)
+init_game = Game(token='DEBUG_TOKEN', debug=True, skip_word_validation=True)
+init_game.make_move("7:G:ab")
+init_game.make_move("7:G:abp")
+games.append(init_game)
 
 
 def get_game_via_token(game_token):
