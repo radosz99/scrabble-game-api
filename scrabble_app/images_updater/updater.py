@@ -4,7 +4,7 @@ from . import constants as const
 
 
 def get_clear_board():
-    return Image.open("resources/boards/clear_board.png")
+    return Image.open("resources/clear_board.png")
 
 
 def get_game_board_via_token(game_token):
