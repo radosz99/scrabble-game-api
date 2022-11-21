@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 
 from scrabble_app.game_logic.models import Game
@@ -12,11 +12,17 @@ app = FastAPI()
 games = []
 
 
+game = Game(token='DEBUG_TOKEN', debug=True)
+game.make_move("7:G:ab")
+game.make_move("7:G:abp")
+games.append(game)
+
+
 def get_game_via_token(game_token):
     for game in games:
         if game.token == game_token:
             return game
-    return None
+    raise HTTPException(status_code=404, detail="Game with token has not been found")
 
 
 @app.get("/initialize")
@@ -49,8 +55,8 @@ async def get_rack_image(game_token):
 @app.get("/readme/{game_token}")
 async def get_readme(game_token):
     game = get_game_via_token(game_token)
-    readme = readme_parser.get_readme_for_game(game)
-    return {'readme': readme}
+    readme_parser.save_readme_for_game(game)
+    return FileResponse(f"resources/readme_{game.token}.txt")
 
 
 @app.get("/status")
@@ -61,14 +67,11 @@ async def get_game_statuses():
 @app.get("/replace/{game_token}/{letters}")
 async def replace_player_letters(game_token, letters):
     game = get_game_via_token(game_token)
-    if not game:
-        return {"valid": False, "message": "Wrong game token"}
-    else:
-        try:
-            response = game.letters_replacement(letters.upper())
-            return {"valid": True, "message": response}
-        except IncorrectMoveError as e:
-            return {"valid": False, "message": str(e)}
+    try:
+        response = game.letters_replacement(letters.upper())
+        return {"valid": True, "message": response}
+    except IncorrectMoveError as e:
+        return {"valid": False, "message": str(e)}
 
 
 @app.get("/best-moves/{game_token}")
@@ -81,21 +84,18 @@ async def get_possible_moves(game_token):
 async def make_move(game_token, move_string):
     # TODO: handle github username
     game = get_game_via_token(game_token)
-    if not game:
-        return {"valid": False, "message": "Wrong game token"}
-    else:
-        try:
-            status = game.make_move(move_string)
-            return {"valid": True, "message": status}
-        except IncorrectMoveError as e:
-            msg = f"Incorrect move = {str(e)}"
-            logger.info(msg)
-            return {"valid": False, "message": msg}
-        except IncorrectWordError as e:
-            msg = f"Incorrect words created with move = {str(e)}"
-            logger.info(msg)
-            return {"valid": False, "message": msg}
-        except GameIsOverError as e:
-            logger.info(str(e))
-            return {"valid": False, "message": str(e)}
+    try:
+        status = game.make_move(move_string)
+        return {"valid": True, "message": status}
+    except IncorrectMoveError as e:
+        msg = f"Incorrect move = {str(e)}"
+        logger.info(msg)
+        return {"valid": False, "message": msg}
+    except IncorrectWordError as e:
+        msg = f"Incorrect words created with move = {str(e)}"
+        logger.info(msg)
+        return {"valid": False, "message": msg}
+    except GameIsOverError as e:
+        logger.info(str(e))
+        return {"valid": False, "message": str(e)}
 

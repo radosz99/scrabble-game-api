@@ -5,7 +5,7 @@ sandbox.py
 resources/boards
 resources/racks
 index.md
-
+readme_*.txt
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template

@@ -1,3 +1,8 @@
+def save_readme_for_game(game):
+    with open(f"resources/readme_{game.token}.txt", "w") as f:
+        f.write(get_readme_for_game(game))
+
+
 def get_readme_for_game(game):
     readme = """
 # Last moves
