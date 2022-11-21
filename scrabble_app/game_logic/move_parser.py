@@ -58,6 +58,8 @@ class Move:
         self.valid = False
         self.legal = False
         self.github_nick = github_nick
+        self.issue_number = None
+        self.issue_title = None
         self.creation_date = datetime.now()
         self.list_of_words = []
         self.player_id = None

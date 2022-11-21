@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 
 from scrabble_app.game_logic.models import Game
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError, GameIsOverError
@@ -7,14 +8,23 @@ from scrabble_app.logger import logger
 from scrabble_app.readme_parser import parser as readme_parser
 import token_generator
 
+
+class MoveRequestBody(BaseModel):
+    move: str
+    github_user: str
+    issue_title: str
+    issue_number: str
+
+
 app = FastAPI()
 
 games = []
 
 
 init_game = Game(token='DEBUG_TOKEN', debug=True, skip_word_validation=True)
-init_game.make_move("7:G:ab")
-init_game.make_move("7:G:abp")
+init_game.make_move(MoveRequestBody(move="7:G:ab", github_user="radosz99", issue_title="scrabble|move|7:G:ab",issue_number="1"))
+init_game.make_move(MoveRequestBody(move="7:G:abp", github_user="radosz99", issue_title="scrabble|move|7:G:abp",issue_number="1"))
+
 games.append(init_game)
 
 
@@ -80,12 +90,12 @@ async def get_possible_moves(game_token):
     return {"moves": game.get_best_moves()}
 
 
-@app.post("/move/{game_token}/{move_string}")
-async def make_move(game_token, move_string):
+@app.post("/move/{game_token}")
+async def make_move(game_token, details: MoveRequestBody):
     # TODO: handle github username
     game = get_game_via_token(game_token)
     try:
-        status = game.make_move(move_string)
+        status = game.make_move(details)
         return {"valid": True, "message": status}
     except IncorrectMoveError as e:
         msg = f"Incorrect move = {str(e)}"

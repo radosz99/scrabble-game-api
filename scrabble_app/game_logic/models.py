@@ -42,10 +42,15 @@ class Game:
         self.create_images()
         self.moves = []
 
-    def make_move(self, move_string):
+    def make_move(self, details):
+        move_string = details.move
+
         if self.status == GameStatus.FINISHED:
             raise exc.GameIsOverError(f"Game is over, winner id = {self.winner_id}, points = {self.players[self.winner_id].points}")
         move = move_parser.parse_move(move_string)
+        move.github_nick = details.github_user
+        move.issue_title = details.issue_title
+        move.issue_number = details.issue_number
         logger.info(f"Player with id = {self.whose_turn} wants to make a move {move}")
         self.validate_move_legality(move)
         move.legal = True
