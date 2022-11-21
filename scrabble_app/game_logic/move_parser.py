@@ -41,11 +41,11 @@ def parse_move(move_string):
         if letter not in utils.legal_letters:
             raise IncorrectMoveError("Move should contain only letters")
     logger.info(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
-    return Move(x_coord, y_coord, letters, orientation)
+    return Move(x_coord, y_coord, letters, orientation, move_string)
 
 
 class Move:
-    def __init__(self, x_start, y_start, letters_string, orientation, github_nick="Anonymous"):
+    def __init__(self, x_start, y_start, letters_string, orientation, move_string, github_nick="Anonymous"):
         self.tiles = []
         for index, letter in enumerate(letters_string.upper()):
             x = x_start if orientation == Orientation.HORIZONTAL else x_start + index
@@ -61,6 +61,7 @@ class Move:
         self.creation_date = datetime.now()
         self.list_of_words = []
         self.player_id = None
+        self.move_string = move_string
 
     def __str__(self):
         return f"Orientation = {self.orientation}, points = {self.points}, valid = {self.valid}, legal = {self.legal}" \
