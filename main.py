@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 from scrabble_app.game_logic.models import Game
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError, GameIsOverError
 from scrabble_app.logger import logger
+from scrabble_app.readme_parser import parser as readme_parser
 import token_generator
 
 app = FastAPI()
@@ -43,6 +44,13 @@ async def get_board_image(game_token):
 async def get_rack_image(game_token):
     game = get_game_via_token(game_token)
     return FileResponse(f"resources/racks/rack_{game.token}.png")
+
+
+@app.get("/readme/{game_token}")
+async def get_readme(game_token):
+    game = get_game_via_token(game_token)
+    readme = readme_parser.get_readme_for_game(game)
+    return {'readme': readme}
 
 
 @app.get("/status")

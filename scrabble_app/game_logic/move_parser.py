@@ -60,6 +60,7 @@ class Move:
         self.github_nick = github_nick
         self.creation_date = datetime.now()
         self.list_of_words = []
+        self.player_id = None
 
     def __str__(self):
         return f"Orientation = {self.orientation}, points = {self.points}, valid = {self.valid}, legal = {self.legal}" \

@@ -40,6 +40,7 @@ class Game:
         self.status = GameStatus.IN_PROGRESS
         self.winner_id = None
         self.create_images()
+        self.moves = []
 
     def make_move(self, move_string):
         if self.status == GameStatus.FINISHED:
@@ -143,7 +144,8 @@ class Game:
         else:
             logger.info("Move is not valid, so the turn won't be changed and letters remain the same")
         logger.info(f"Assigning move = {move} to player")
-        player.moves.append(move)
+        move.player_id = player.id
+        self.moves.append(move)
 
     def update_player_letters(self, player, move):
         used_letters = [letter_tile.letter for letter_tile in move.get_user_tiles()]
@@ -229,7 +231,8 @@ class Game:
             'whose_turn': self.whose_turn,
             'players': self.players,
             'board': self.board,
-            'letters_bank': self.letters_bank
+            'letters_bank': self.letters_bank,
+            'moves': self.moves
         }
 
     def get_short_status_in_json(self):
@@ -240,7 +243,8 @@ class Game:
                 "initialize_timestamp": self.initialize_timestamp,
                 "last_move_timestamp": self.last_move_timestamp,
                 "letters_bank": "".join(self.letters_bank.letters),
-                "letters_on_board": self.board.count_letters_on_board()}
+                "letters_on_board": self.board.count_letters_on_board(),
+                "moves": self.moves}
 
 
 class LettersBank:
@@ -344,7 +348,6 @@ class Player:
         self.name = name
         self.id = id
         self.letters = letters
-        self.moves = []
         self.points = 0
 
     def give_letters(self, letters):
@@ -381,8 +384,7 @@ class Player:
         return True
 
     def __str__(self):
-        return f"Player '{self.name}' with id = {self.id}, letters = {self.letters}, points = {self.points}, " \
-               f"moves = {self.moves}"
+        return f"Player '{self.name}' with id = {self.id}, letters = {self.letters}, points = {self.points}"
 
     def __repr__(self):
         return self.__str__()

@@ -35,10 +35,13 @@ class Testing(unittest.TestCase):
     def test_game_2(self):
         game = Game(debug=True, token=game_token)
         make_move(game, "7:G:ab")
-        print(game.players)
         make_move(game, "7:G:abp")
-        print(game.players)
+        print(game.get_short_status_in_json())
 
     def test_letters_replacement(self):
         game = Game(debug=True, token=game_token)
         game.letters_replacement("GD")
+
+
+if __name__ == "__main__":
+    unittest.main()
