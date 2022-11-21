@@ -120,8 +120,7 @@ class Game:
 
     def proceed_after_turn(self, move):
         player = self.get_current_player()
-        if self.check_if_game_is_over():
-            self.status = GameStatus.FINISHED
+
         if move.valid:
             if not self.debug:
                 self.update_player_letters(player, move)
@@ -132,6 +131,8 @@ class Game:
             logger.info(f"Player's points increased by {move.points}, currently {player.points}")
             self.update_images(move)
             self.first_turn = False
+            if self.check_if_game_is_over():
+                self.status = GameStatus.FINISHED
         else:
             logger.info("Move is not valid, so the turn won't be changed and letters remain the same")
         logger.info(f"Assigning move = {move} to player")
