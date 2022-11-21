@@ -1,5 +1,6 @@
 import random
 import copy
+import shutil
 from datetime import datetime
 from enum import Enum
 
@@ -38,6 +39,7 @@ class Game:
         self.last_move_timestamp = None
         self.status = GameStatus.IN_PROGRESS
         self.winner_id = None
+        self.create_images()
 
     def make_move(self, move_string):
         if self.status == GameStatus.FINISHED:
@@ -56,6 +58,11 @@ class Game:
         self.last_move_timestamp = datetime.now()
         return f"Valid move, points = {move.points}, created words = {move.list_of_words}, letters before = " \
                f"{letters_before}"
+
+    def create_images(self):
+        shutil.copyfile('resources/clear_board.png', f"resources/boards/board_{self.token}.png")
+        letters_list = self.get_letters_from_player_with_turn()
+        updater.update_rack_with_letters(self.token, letters_list)
 
     def validate_move_legality(self, move):
         contains_user_letters, contains_board_letters, middle_filled = False, False, False
@@ -162,7 +169,6 @@ class Game:
     def get_current_player(self):
         return self.players[self.whose_turn]
 
-
     def check_if_game_is_over(self):
         logger.info("Checking if game has finished")
         if self.letters_bank.empty():
@@ -190,7 +196,7 @@ class Game:
 
     def update_images(self, move=None):
         if move is not None:
-            updater.update_board_with_new_move(move, self.token, self.first_turn)
+            updater.update_board_with_new_move(move, self.token)
         letters_list = self.get_letters_from_player_with_turn()
         updater.update_rack_with_letters(self.token, letters_list)
 

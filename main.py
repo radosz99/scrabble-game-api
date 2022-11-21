@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 from scrabble_app.game_logic.models import Game
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError, GameIsOverError
@@ -30,6 +31,18 @@ async def initialize_game():
 async def get_game_status(game_token):
     game = get_game_via_token(game_token)
     return game.get_status_in_json()
+
+
+@app.get("/board-image/{game_token}")
+async def get_board_image(game_token):
+    game = get_game_via_token(game_token)
+    return FileResponse(f"resources/boards/board_{game.token}.png")
+
+
+@app.get("/rack-image/{game_token}")
+async def get_rack_image(game_token):
+    game = get_game_via_token(game_token)
+    return FileResponse(f"resources/racks/rack_{game.token}.png")
 
 
 @app.get("/status")

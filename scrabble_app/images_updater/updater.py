@@ -25,11 +25,9 @@ def get_image_coordinates(x, y):
     return new_x, new_y
 
 
-def update_board_with_new_move(move, game_token, first_move):
-    if first_move:
-        board = get_clear_board()
-    else:
-        board = get_game_board_via_token(game_token)
+def update_board_with_new_move(move, game_token):
+    board = get_game_board_via_token(game_token)
+
     for letter_tile in move.tiles:
         x_pixel, y_pixel = get_image_coordinates(letter_tile.x, letter_tile.y)
         tile = Image.open(f"resources/tiles/{letter_tile.letter.upper()}.png").convert("RGBA")
