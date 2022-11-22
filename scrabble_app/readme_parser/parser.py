@@ -2,11 +2,13 @@ from scrabble_app.game_logic.move_parser import Move, Replace
 
 
 def save_readme_for_game(game, repository_path):
+
     with open(f"resources/readme_{game.token}.txt", "w") as f:
         f.write(get_readme_for_game(game, repository_path))
 
 
 def get_readme_for_game(game, repository_path):
+    get_best_moves_table_view(game)
     readme = """
 # Board
 
@@ -23,6 +25,20 @@ def get_readme_for_game(game, repository_path):
     table_view = get_moves_table_view(game)
     for row in table_view:
         readme += row
+    readme += """
+# Possibly best moves:
+
+<details>
+  <summary>Spoiler warning</summary>
+  
+  | Id | Move | Issue title | Points | 
+  | - | - | - | - |"""
+    best_moves_table_view = get_best_moves_table_view(game)
+    for row in best_moves_table_view:
+        readme += row
+    readme += """
+</details>
+    """
     return readme
 
 
@@ -38,5 +54,16 @@ def create_move_row(index, move, game):
     elif isinstance(move, Replace):
         return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {move.creation_date} | 0 | {get_player_name_via_id(game, move.player_id)} |"
 
+
 def get_player_name_via_id(game, id):
     return game.players[id].name
+
+
+def get_best_moves_table_view(game):
+    best_moves = game.get_best_moves()
+    table_view = [create_best_move_row(index + 1, move) for index, move in enumerate(best_moves)]
+    return table_view
+
+
+def create_best_move_row(index, move):
+    return f"\n|{index}| f{move['move']} | scrabble&#124;move&#124;{move['move']} | {move['points']} |"
