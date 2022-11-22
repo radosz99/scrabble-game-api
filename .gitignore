@@ -7,6 +7,8 @@ resources/racks
 index.md
 readme_*.txt
 
+.idea/
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
