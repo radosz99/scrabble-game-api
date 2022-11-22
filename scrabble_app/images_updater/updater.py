@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 
 from . import constants as const
+from scrabble_app.logger import logger
 
 
 def get_clear_board():
@@ -27,7 +28,7 @@ def get_image_coordinates(x, y):
 
 def update_board_with_new_move(move, game_token):
     board = get_game_board_via_token(game_token)
-
+    logger.info(f"Updating board image with move = {move.tiles}")
     for letter_tile in move.tiles:
         x_pixel, y_pixel = get_image_coordinates(letter_tile.x, letter_tile.y)
         tile = Image.open(f"resources/tiles/{letter_tile.letter.upper()}.png").convert("RGBA")
@@ -36,6 +37,7 @@ def update_board_with_new_move(move, game_token):
 
 
 def update_rack_with_letters(game_token, letters_list):
+    logger.info(f"Updating rack image with letters = {letters_list}")
     img = Image.new('RGB', (46*7, 46), color=(230, 230, 230))
     draw = ImageDraw.Draw(img)
     for index, letter in enumerate(letters_list):

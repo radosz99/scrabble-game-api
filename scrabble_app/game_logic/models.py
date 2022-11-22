@@ -198,6 +198,7 @@ class Game:
             raise exc.IncorrectMoveError(f"Invalid letters to replace, players letters = {player.get_letters()}")
 
     def get_current_player(self):
+        logger.info(f"Getting current player with id = {self.whose_turn}")
         return self.players[self.whose_turn]
 
     def check_if_game_is_over(self):
@@ -239,6 +240,7 @@ class Game:
         logger.info(f"Changing turn to player with id = {self.whose_turn}")
 
     def get_letters_from_player_with_turn(self):
+        logger.info("Getting letters from player with turn")
         return self.get_current_player().get_letters()
 
     def empty_board(self):
