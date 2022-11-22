@@ -1,19 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 
-from scrabble_app.game_logic.models import Game
+from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError, GameIsOverError
 from scrabble_app.logger import logger
 from scrabble_app.readme_parser import parser as readme_parser
 import token_generator
-
-
-class MoveRequestBody(BaseModel):
-    move: str
-    github_user: str
-    issue_title: str
-    issue_number: str
 
 
 app = FastAPI()
@@ -74,11 +66,11 @@ async def get_game_statuses():
     return {'games': [game.get_short_status_in_json() for game in games]}
 
 
-@app.get("/replace/{game_token}/{letters}")
-async def replace_player_letters(game_token, letters):
+@app.post("/replace/{game_token}")
+async def replace_player_letters(game_token, details: ReplaceRequestBody):
     game = get_game_via_token(game_token)
     try:
-        response = game.letters_replacement(letters.upper())
+        response = game.letters_replacement(details)
         return {"valid": True, "message": response}
     except IncorrectMoveError as e:
         return {"valid": False, "message": str(e)}
@@ -92,7 +84,6 @@ async def get_possible_moves(game_token):
 
 @app.post("/move/{game_token}")
 async def make_move(game_token, details: MoveRequestBody):
-    # TODO: handle github username
     game = get_game_via_token(game_token)
     try:
         status = game.make_move(details)

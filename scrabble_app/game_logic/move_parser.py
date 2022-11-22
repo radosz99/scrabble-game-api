@@ -44,8 +44,20 @@ def parse_move(move_string):
     return Move(x_coord, y_coord, letters, orientation, move_string)
 
 
+class Replace:
+    def __init__(self, letters, github_user, issue_title, issue_number):
+        self.valid = False
+        self.github_user = github_user
+        self.issue_number = issue_number
+        self.issue_title = issue_title
+        self.creation_date = datetime.now()
+        self.letters_to_replace = letters
+        self.new_letters = None
+        self.player_id = None
+
+
 class Move:
-    def __init__(self, x_start, y_start, letters_string, orientation, move_string, github_nick="Anonymous"):
+    def __init__(self, x_start, y_start, letters_string, orientation, move_string):
         self.tiles = []
         for index, letter in enumerate(letters_string.upper()):
             x = x_start if orientation == Orientation.HORIZONTAL else x_start + index
@@ -57,7 +69,7 @@ class Move:
         self.orientation = orientation
         self.valid = False
         self.legal = False
-        self.github_nick = github_nick
+        self.github_user = None
         self.issue_number = None
         self.issue_title = None
         self.creation_date = datetime.now()
@@ -67,7 +79,7 @@ class Move:
 
     def __str__(self):
         return f"Orientation = {self.orientation}, points = {self.points}, valid = {self.valid}, legal = {self.legal}" \
-               f", date = {self.creation_date}, github nick = {self.github_nick}, list of words = {self.list_of_words}" \
+               f", date = {self.creation_date}, github nick = {self.github_user}, list of words = {self.list_of_words}" \
                f", letter tiles = {self.tiles}"
 
     def __repr__(self):
@@ -147,6 +159,3 @@ class LetterTile:
 class Orientation(Enum):
     VERTICAL = 1
     HORIZONTAL = 2
-
-
-

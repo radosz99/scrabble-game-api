@@ -3,6 +3,7 @@ import copy
 import shutil
 from datetime import datetime
 from enum import Enum
+from pydantic import BaseModel
 
 from . import utils
 from . import move_parser
@@ -11,6 +12,20 @@ from scrabble_app.logger import logger
 from . import word_finder
 from . import cheater_service
 from scrabble_app.images_updater import updater
+
+
+class BaseRequestBody(BaseModel):
+    github_user: str
+    issue_title: str
+    issue_number: str
+
+
+class MoveRequestBody(BaseRequestBody):
+    move: str
+
+
+class ReplaceRequestBody(BaseRequestBody):
+    letters: str
 
 
 class GameStatus(Enum):
@@ -48,7 +63,7 @@ class Game:
         if self.status == GameStatus.FINISHED:
             raise exc.GameIsOverError(f"Game is over, winner id = {self.winner_id}, points = {self.players[self.winner_id].points}")
         move = move_parser.parse_move(move_string)
-        move.github_nick = details.github_user
+        move.github_user = details.github_user
         move.issue_title = details.issue_title
         move.issue_number = details.issue_number
         logger.info(f"Player with id = {self.whose_turn} wants to make a move {move}")
@@ -159,16 +174,25 @@ class Game:
         letters_to_give = 7 - len(player.get_letters())
         player.give_letters(self.letters_bank.get_x_letters(letters_to_give))
 
-    def letters_replacement(self, letters_to_replace):
+    def letters_replacement(self, details):
+        logger.info(f"Replacing letters with details = {details}")
+        letters_to_replace = details.letters.upper()
         player = self.get_current_player()
         valid_letters = player.check_if_letters_in_players_letters(letters_to_replace)
         if valid_letters:
+            move = move_parser.Replace(letters_to_replace, details.github_user, details.issue_title, details.issue_number)
             player.remove_letters([*letters_to_replace.upper()])
             new_letters = self.letters_bank.replace_x_letters(letters_to_replace)
             player.give_letters(new_letters)
+            move.new_letters = "".join(new_letters)
             self.switch_turn()
+            move.valid = True
+            move.player_id = player.id
+            self.update_images()
+            self.first_turn = False
             msg = f"New players letters = {new_letters}, old = {letters_to_replace}, current letters = {player.get_letters()}"
             logger.info(msg)
+            self.moves.append(move)
             return msg
         else:
             raise exc.IncorrectMoveError(f"Invalid letters to replace, players letters = {player.get_letters()}")
