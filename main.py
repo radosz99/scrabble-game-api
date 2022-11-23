@@ -73,7 +73,7 @@ async def replace_player_letters(game_token, details: ReplaceRequestBody):
         response = game.letters_replacement(details)
         return {"valid": True, "message": response}
     except IncorrectMoveError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/best-moves/{game_token}")
@@ -91,12 +91,12 @@ async def make_move(game_token, details: MoveRequestBody):
     except IncorrectMoveError as e:
         msg = f"Incorrect move = {str(e)}"
         logger.info(msg)
-        raise HTTPException(status_code=404, detail=msg)
+        raise HTTPException(status_code=400, detail=msg)
     except IncorrectWordError as e:
         msg = f"Incorrect words created with move = {str(e)}"
         logger.info(msg)
-        raise HTTPException(status_code=404, detail=msg)
+        raise HTTPException(status_code=400, detail=msg)
     except GameIsOverError as e:
         logger.info(str(e))
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
