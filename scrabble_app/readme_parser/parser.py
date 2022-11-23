@@ -32,8 +32,8 @@ def get_readme_for_game(game, repository_path):
 <details>
   <summary>Spoiler warning</summary>
   
-  | Id | Move | Issue title | Points | Link |
-  | - | - | - | - | - | """
+  | Id | Move | Issue link | Points |
+  | - | - | - | - |  """
     best_moves_table_view = get_best_moves_table_view(game)
     for row in best_moves_table_view:
         readme += row
@@ -67,8 +67,12 @@ def get_best_moves_table_view(game):
 
 
 def create_best_move_row(index, move):
-    return f"\n|{index}| {move['move']} | scrabble&#124;move&#124;{move['move']} | {move['points']} | {get_issue_url(move['move'])}"
+    move_string = move['move']
+    return f"\n|{index}| {move_string} | [scrabble&#124;move&#124;{move_string}]({get_issue_url(move['move'])}) | {move['points']} "
 
 
 def get_issue_url(move):
-    return f"https://github.com/radosz99/radosz99/issues/new?title=scrabble|move|{move}&body=Just+push+%27Submit+new+issue%27+or+update+with+your+move."
+    return f"https://github.com/radosz99/radosz99/issues/new?title=scrabble%7Cmove%7C{get_move_with_replaced_colon(move)}&body=Just+push+%27Submit+new+issue%27+or+update+with+your+move."
+
+def get_move_with_replaced_colon(move_string):
+    return move_string.replace(':', "%3A")
