@@ -33,7 +33,7 @@ async def initialize_game():
     game_token = token_generator.generate(length=12)
     game = Game(token=game_token)
     games.append(game)
-    return {"game_token": game_token}
+    return {"game_token": game_token, "detail": "New game has been initialized"}
 
 
 @app.get("/status/{game_token}")
