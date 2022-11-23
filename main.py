@@ -71,7 +71,7 @@ async def replace_player_letters(game_token, details: ReplaceRequestBody):
     game = get_game_via_token(game_token)
     try:
         response = game.letters_replacement(details)
-        return {"valid": True, "message": response}
+        return {"detail": response}
     except IncorrectMoveError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -87,13 +87,13 @@ async def make_move(game_token, details: MoveRequestBody):
     game = get_game_via_token(game_token)
     try:
         status = game.make_move(details)
-        return {"valid": True, "message": status}
+        return {"detail": status}
     except IncorrectMoveError as e:
-        msg = f"Incorrect move = {str(e)}"
+        msg = f"Incorrect move, {str(e)}"
         logger.info(msg)
         raise HTTPException(status_code=400, detail=msg)
     except IncorrectWordError as e:
-        msg = f"Incorrect words created with move = {str(e)}"
+        msg = f"Incorrect words created with move, {str(e)}"
         logger.info(msg)
         raise HTTPException(status_code=400, detail=msg)
     except GameIsOverError as e:
