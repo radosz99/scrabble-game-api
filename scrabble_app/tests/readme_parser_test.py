@@ -21,7 +21,7 @@ def make_move(game, move):
 
 class Testing(unittest.TestCase):
     def test_if_clear_board(self):
-        game = Game(token=token, debug=True)
+        game = Game(token=token, debug=True, skip_word_validation=True)
         make_move(game, "7:G:ab")
         game.letters_replacement(ReplaceRequestBody(letters="GD", github_user="radosz99", issue_title=f"scrabble|replace|GD",issue_number="1"))
         make_move(game, "7:G:abp")
