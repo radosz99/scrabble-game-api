@@ -1,10 +1,11 @@
 from scrabble_app.game_logic.move_parser import Move, Replace
-
+from scrabble_app.logger import logger
 
 def save_readme_for_game(game, repository_path):
-
+    readme = get_readme_for_game(game, repository_path)
+    logger.info(f"Readme for game with token {game.token}: \n {readme}")
     with open(f"resources/readme_{game.token}.txt", "w") as f:
-        f.write(get_readme_for_game(game, repository_path))
+        f.write(readme)
 
 
 def get_readme_for_game(game, repository_path):
