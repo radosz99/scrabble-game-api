@@ -6,31 +6,44 @@ def save_readme_for_game(game, repository_path):
     logger.info(f"Readme for game with token {game.token}: \n {readme}")
     with open(f"resources/readme_{game.token}.txt", "w") as f:
         f.write(readme)
+    return readme
 
 
 def get_readme_for_game(game, repository_path):
     get_best_moves_table_view(game)
     readme = """
-# Board
-
+Play scrabble!
+## Current status
+### Board
 <p align="center">
 """
     readme += f"<img src=\"https://raw.githubusercontent.com/{repository_path}/main/board.png\" width=70% alt=\"Img\"/>"
     readme += """
     </p>
     
-# Last moves
-
-| Id | Type | Move / Letters to replace | Created words / New letters | Date | Points | Player | Who |
-| - | - | - | - | - | - | - | - |"""
-    table_view = get_moves_table_view(game)
-    for row in table_view:
-        readme += row
+### Turn
+Now it is """
+    readme += f"{game.players[game.whose_turn].name}"
+    readme += """ turn, letters in rack:
+<p align="center">
+"""
+    readme += f"<img src=\"https://raw.githubusercontent.com/{repository_path}/main/rack.png\" width=30% alt=\"Img\"/>"
     readme += """
-# Possibly best moves:
+</p>
 
+### Game score
+| Id | Player name | Points |
+  | - | - | - |  """
+    score_view = get_game_score_table_view(game)
+    for row in score_view:
+        readme += row
+    readme += "\n## Make the move\n"
+    readme += f"Make the move and insert the letters by creating an [issue]({get_issue_url('7:A:RIDE')}) according to the rules or...\n"
+    readme += """
+## Possibly best moves  
+Are you sure? :smiling_imp: :smiling_imp: :smiling_imp:
 <details>
-  <summary>Spoiler warning</summary>
+  <summary>Spoiler warning!</summary>
   
   | Id | Move | Issue link | Points |
   | - | - | - | - |  """
@@ -40,6 +53,14 @@ def get_readme_for_game(game, repository_path):
     readme += """
 </details>
     """
+    readme += """
+## Latest moves
+
+| Id | Type | Move / Letters to replace | Created words / New letters | Date | Points | Player | Who |
+| - | - | - | - | - | - | - | - |"""
+    table_view = get_moves_table_view(game)
+    for row in table_view:
+        readme += row
     return readme
 
 
@@ -51,13 +72,23 @@ def get_moves_table_view(game):
 
 def create_move_row(index, move, game):
     if isinstance(move, Move):
-        return f"\n|{index}| INSERT | {move.move_string} | {move.list_of_words} | {move.creation_date} | {move.points} | {get_player_name_via_id(game, move.player_id)} | [{move.github_user}](github.com/radosz99) |"
+        return f"\n|{index}| INSERT | {move.move_string} | {move.list_of_words} | {convert_date_to_date_string(move.creation_date)} | {move.points} | {get_player_name_via_id(game, move.player_id)} | [{move.github_user}](github.com/radosz99) |"
     elif isinstance(move, Replace):
-        return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {move.creation_date} | 0 | {get_player_name_via_id(game, move.player_id)} | [{move.github_user}](github.com/radosz99) |"
+        return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [{move.github_user}](github.com/radosz99) |"
 
+def convert_date_to_date_string(date):
+    return date.strftime("%m/%d/%Y, %H:%M:%S")
 
 def get_player_name_via_id(game, id):
     return game.players[id].name
+
+
+def get_game_score_table_view(game):
+    return [get_player_score_row(index, player.name, player.points) for index, player in game.players.items()]
+
+
+def get_player_score_row(index, player_name, points):
+    return f"\n|{index} | {player_name} | {points}"
 
 
 def get_best_moves_table_view(game):
