@@ -26,22 +26,22 @@ def get_image_coordinates(x, y):
     return new_x, new_y
 
 
-def update_board_with_new_move(move, game_token):
+def update_board_with_new_move(move, game_token, country):
     board = get_game_board_via_token(game_token)
     logger.info(f"Updating board image with move = {move.tiles}")
     for letter_tile in move.tiles:
         x_pixel, y_pixel = get_image_coordinates(letter_tile.x, letter_tile.y)
-        tile = Image.open(f"resources/tiles/{letter_tile.letter.upper()}.png").convert("RGBA")
+        tile = Image.open(f"resources/tiles/{country}/{letter_tile.letter.upper()}.png").convert("RGBA")
         board.paste(tile, (y_pixel, x_pixel), tile)
     save_board(board, game_token)
 
 
-def update_rack_with_letters(game_token, letters_list):
+def update_rack_with_letters(game_token, letters_list, country):
     logger.info(f"Updating rack image with letters = {letters_list}")
     img = Image.new('RGB', (46*7, 46), color=(230, 230, 230))
     draw = ImageDraw.Draw(img)
     for index, letter in enumerate(letters_list):
-        tile = Image.open(f"resources/tiles/{letter.upper()}.png").convert("RGBA")
+        tile = Image.open(f"resources/tiles/{country}/{letter.upper()}.png").convert("RGBA")
         img.paste(tile, (46 * index, 0), tile)
         draw.line((46 * index, 0, 46 * index, 46) + img.size, fill=256)
     save_rack(img, game_token)

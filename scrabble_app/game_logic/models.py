@@ -89,7 +89,7 @@ class Game:
     def create_images(self):
         shutil.copyfile('resources/clear_board.png', f"resources/boards/board_{self.token}.png")
         letters_list = self.get_letters_from_player_with_turn()
-        updater.update_rack_with_letters(self.token, letters_list)
+        updater.update_rack_with_letters(self.token, letters_list, self.country.name)
 
     def validate_move_legality(self, move):
         contains_user_letters, contains_board_letters, middle_filled = False, False, False
@@ -234,9 +234,9 @@ class Game:
 
     def update_images(self, move=None):
         if move is not None:
-            updater.update_board_with_new_move(move, self.token)
+            updater.update_board_with_new_move(move, self.token, self.country.name)
         letters_list = self.get_letters_from_player_with_turn()
-        updater.update_rack_with_letters(self.token, letters_list)
+        updater.update_rack_with_letters(self.token, letters_list, self.country.name)
 
     def next_player_id(self):
         return self.whose_turn + 1 if self.players_number > self.whose_turn + 1 else 0
