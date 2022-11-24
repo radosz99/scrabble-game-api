@@ -287,6 +287,7 @@ class Game:
 class LettersBank:
     def __init__(self, country: Country):
         self.letters = []
+        self.country = country
         occurrences = utils.occurrences[country.name]
         for key, value in occurrences.items():
             self.letters.extend([key for _ in range(value)])
