@@ -139,7 +139,7 @@ class Game:
         list_of_words = self.find_new_words(move)
         move.list_of_words = list_of_words
         logger.info(f"List of new potential words = {list_of_words}")
-        validation_status, incorrect_words = cheater_service.validate_words(list_of_words)
+        validation_status, incorrect_words = cheater_service.validate_words(list_of_words, self.country.name)
         if validation_status:
             logger.info("All words have passed validation")
         else:
@@ -254,7 +254,7 @@ class Game:
 
     def get_best_moves(self):
         player_letters = self.get_current_player().get_letters_string()
-        return cheater_service.get_best_moves(player_letters, self.board.get_board_copy())
+        return cheater_service.get_best_moves(player_letters, self.board.get_board_copy(), self.country.name)
 
     def print_board(self):
         logger.info(f"Current board status: \n{self.board.get_board_string()}")

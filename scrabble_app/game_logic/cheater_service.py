@@ -10,8 +10,8 @@ load_dotenv(dotenv_path=Path('local.env'))
 
 api_url = os.getenv('CHEATER_API_URL')
 
-VALIDATION_URL = f"{api_url}/check-words/GB"
-CHEATER_URL = f"{api_url}/best-move/GB"
+VALIDATION_URL = f"{api_url}/check-words"
+CHEATER_URL = f"{api_url}/best-move"
 
 
 def parse_move_from_response(move):
@@ -30,16 +30,16 @@ def get_best_moves_from_response(response):
     return [parse_move_from_response(move) for move in response['moves'][:10]]
 
 
-def get_best_moves(letters, board):
+def get_best_moves(letters, board, country):
     logger.info("Getting best moves")
-    response = send_post_request(url=CHEATER_URL, json_body={"letters": letters, "board": board})
+    response = send_post_request(url=f"{CHEATER_URL}/{country}", json_body={"letters": letters, "board": board})
     return get_best_moves_from_response(response)
 
 
-def validate_words(words: list):
+def validate_words(words, country):
     words = [word.lower() for word in words]
     logger.info(f"Validating list of words via cheater service = {words}")
-    response = send_post_request(url=VALIDATION_URL, json_body={"words": words})
+    response = send_post_request(url=f"{VALIDATION_URL}/{country}", json_body={"words": words})
     return response['status'], get_incorrect_words_from_response(response)
 
 
