@@ -23,7 +23,7 @@ def can_convert_to_int(string):
         return False
 
 
-def parse_move(move_string):
+def parse_move(move_string, country):
     logger.info(f"Parsing move = {move_string}")
     first_coord, second_coord, letters = validate_move_string(move_string)
     logger.info(f"First coord = {first_coord}, second coord = {second_coord}, letters = {letters}")
@@ -38,10 +38,10 @@ def parse_move(move_string):
     else:
         raise IncorrectMoveError("Move should be formatted like this - 8:A:KNIFE or B:13:TREE")
     for letter in letters:
-        if letter not in utils.legal_letters:
-            raise IncorrectMoveError("Move should contain only letters")
+        if letter not in utils.legal_letters[country.name]:
+            raise IncorrectMoveError("Move should contain only letters from dictionary for ")
     logger.info(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
-    return Move(x_coord, y_coord, letters, orientation, move_string)
+    return Move(x_coord, y_coord, letters, orientation, move_string, country)
 
 
 class Replace:
@@ -57,18 +57,19 @@ class Replace:
 
 
 class Move:
-    def __init__(self, x_start, y_start, letters_string, orientation, move_string):
+    def __init__(self, x_start, y_start, letters_string, orientation, move_string, country):
         self.tiles = []
         for index, letter in enumerate(letters_string.upper()):
             x = x_start if orientation == Orientation.HORIZONTAL else x_start + index
             y = y_start if orientation == Orientation.VERTICAL else y_start + index
             if y > 14 or x > 14:
                 raise IncorrectMoveError("Borders have been exceeded, illegal move")
-            self.tiles.append(LetterTile(x, y, letter))
+            self.tiles.append(LetterTile(x, y, letter, country))
         self.points = -1
         self.orientation = orientation
         self.valid = False
         self.legal = False
+        self.country = country
         self.github_user = None
         self.issue_number = None
         self.issue_title = None
@@ -122,11 +123,12 @@ class Move:
 
 
 class LetterTile:
-    def __init__(self, x, y, letter):
+    def __init__(self, x, y, letter, country):
         self.x = x
         self.y = y
         self.letter = letter
         self.user_letter = True
+        self.country = country
 
     def __str__(self):
         return f"Letter = {self.letter}, coordinates = ({self.x}, {self.y}), user letter = {self.user_letter}"
@@ -146,7 +148,7 @@ class LetterTile:
         return letter_multiplier * letter_value
 
     def get_letter_value(self):
-        return utils.letter_values[self.letter]
+        return utils.letters_values[self.country.name][self.letter]
 
     def get_field_letter_multiplier(self):
         return utils.letter_multiplier[self.x][self.y]

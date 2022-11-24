@@ -33,13 +33,19 @@ class GameStatus(Enum):
     FINISHED = 2
 
 
+class Country(Enum):
+    GB = 1
+    PL = 2
+
+
 class Game:
-    def __init__(self, token, debug=False, skip_word_validation=False):
-        logger.info(f"Creating new Game instance, debug = {debug}")
+    def __init__(self, token, country=Country.GB, debug=False, skip_word_validation=False):
+        logger.info(f"Creating new Game instance, debug = {debug}, token = {token}, country = {country}")
+        self.country = country
         self.token = token
         self.debug = debug
         self.skip_word_validation = skip_word_validation
-        self.letters_bank = LettersBank()
+        self.letters_bank = LettersBank(country)
         self.board = Board()
         # TODO: extend to max 4 players
         self.players = {
@@ -62,7 +68,7 @@ class Game:
 
         if self.status == GameStatus.FINISHED:
             raise exc.GameIsOverError(f"Game is over, winner is = {self.players[self.winner_id]}, points = {self.players[self.winner_id].points}")
-        move = move_parser.parse_move(move_string)
+        move = move_parser.parse_move(move_string, self.country)
         move.github_user = details.github_user
         move.issue_title = details.issue_title
         move.issue_number = details.issue_number
@@ -279,9 +285,10 @@ class Game:
 
 
 class LettersBank:
-    def __init__(self):
+    def __init__(self, country: Country):
         self.letters = []
-        for key, value in utils.occurrences.items():
+        occurrences = utils.occurrences[country.name]
+        for key, value in occurrences.items():
             self.letters.extend([key for _ in range(value)])
 
     def __repr__(self):

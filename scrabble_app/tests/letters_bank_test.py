@@ -1,11 +1,11 @@
 import unittest
 
-from scrabble_app.game_logic.models import LettersBank
+from scrabble_app.game_logic.models import LettersBank, Country
 
 
 class Testing(unittest.TestCase):
     def setUp(self):
-        self.letters_bank = LettersBank()
+        self.letters_bank = LettersBank(Country.PL)
 
     def test_amount_of_returned_letters(self):
         letters_number = 7

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 
-from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody
+from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody, Country
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError, GameIsOverError
 from scrabble_app.logger import logger
 from scrabble_app.readme_parser import parser as readme_parser
@@ -27,11 +27,18 @@ def get_game_via_token(game_token):
     raise HTTPException(status_code=404, detail="Game with token has not been found")
 
 
-@app.get("/initialize")
-async def initialize_game():
+def get_country_via_abbreviation(abbreviation):
+    for country in Country:
+        if abbreviation.upper() == country.name:
+            return country
+    raise HTTPException(status_code=400, detail=f"Wrong country, currently supported = {[country.name for country in Country]})")
+
+
+@app.get("/initialize/{country}")
+async def initialize_game(country):
     # TODO: add request body with players
     game_token = token_generator.generate(length=12)
-    game = Game(token=game_token)
+    game = Game(token=game_token, country=get_country_via_abbreviation(country))
     games.append(game)
     return {"game_token": game_token, "detail": "New game has been initialized"}
 
@@ -58,7 +65,7 @@ async def get_rack_image(game_token):
 async def get_readme(game_token, repository_path: str = "radosz99/radosz99"):
     game = get_game_via_token(game_token)
     readme_parser.save_readme_for_game(game, repository_path)
-    return FileResponse(f"resources/readme_{game.token}.txt")
+    return FileResponse(f"resources/readme/readme_{game.token}.txt")
 
 
 @app.get("/status")
