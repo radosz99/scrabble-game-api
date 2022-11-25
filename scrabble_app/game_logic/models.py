@@ -68,7 +68,7 @@ class Game:
         move_string = details.move
 
         if self.status == GameStatus.FINISHED:
-            raise exc.GameIsOverError(f"Game is over, winner is = {self.players[self.winner_id]}, points = {self.players[self.winner_id].points}")
+            raise exc.GameIsOverError(f"Game is over, winner is = {self.players[self.winner_id].name}, points = {self.players[self.winner_id].points}")
         move = move_parser.parse_move(move_string, self.country)
         move.github_user = details.github_user
         move.issue_title = details.issue_title
