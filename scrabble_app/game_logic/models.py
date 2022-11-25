@@ -3,15 +3,16 @@ import copy
 import shutil
 from datetime import datetime
 from enum import Enum
+
 from pydantic import BaseModel
 
 from . import utils
 from . import move_parser
 from . import exceptions as exc
-from scrabble_app.logger import logger
 from . import word_finder
 from . import cheater_service
 from scrabble_app.images_updater import updater
+from scrabble_app.logger import logger
 
 
 class BaseRequestBody(BaseModel):
@@ -83,8 +84,11 @@ class Game:
         letters_before = "".join(self.get_letters_from_player_with_turn())
         self.proceed_after_turn(move)
         self.last_move_timestamp = datetime.now()
-        return f"Valid move, points = {move.points}, created words = {move.list_of_words}, letters before = " \
+        msg = f"Valid move, points = {move.points}, created words = {move.list_of_words}, player's letters before the move = " \
                f"{letters_before}"
+        if self.status == GameStatus.FINISHED:
+            msg += f", game is over, winner = {self.players[self.winner_id].name}!"
+        return msg
 
     def create_images(self):
         shutil.copyfile('resources/clear_board.png', f"resources/boards/board_{self.token}.png")
