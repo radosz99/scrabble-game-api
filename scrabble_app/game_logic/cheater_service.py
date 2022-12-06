@@ -35,6 +35,7 @@ def get_best_moves_from_response(response):
 def get_best_moves(letters, board, country):
     logger.info("Getting best moves")
     response = send_post_request(url=f"{CHEATER_URL}/{country}", json_body={"letters": letters, "board": board})
+    logger.debug(f"Response: {response}")
     return get_best_moves_from_response(response)
 
 
@@ -42,6 +43,7 @@ def validate_words(words, country):
     words = [word.lower() for word in words]
     logger.info(f"Validating list of words via cheater service = {words}")
     response = send_post_request(url=f"{VALIDATION_URL}/{country}", json_body={"words": words})
+    logger.debug(f"Response: {response}")
     if not response['status']:
         raise exc.IncorrectWordError(f"Some words have not passed validation = {get_incorrect_words_from_response(response)}")
 
