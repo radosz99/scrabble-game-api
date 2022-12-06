@@ -39,7 +39,7 @@ def parse_move(move_string, country):
         raise IncorrectMoveError("Move should be formatted like this - 8:A:KNIFE or B:13:TREE")
     for letter in letters:
         if letter not in utils.legal_letters[country.name]:
-            raise IncorrectMoveError(f"Move should contain only letters from {country.name}vdictionary")
+            raise IncorrectMoveError(f"Move should contain only letters from {country.name} dictionary")
     logger.info(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
     return Move(x_coord, y_coord, letters, orientation, move_string, country)
 
