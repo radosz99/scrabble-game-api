@@ -37,10 +37,11 @@ class GameStatus(Enum):
 class Country(Enum):
     GB = 1
     PL = 2
+    ES = 3
 
 
 class Game:
-    def __init__(self, token, country=Country.GB, debug=False, skip_word_validation=False):
+    def __init__(self, token, country=Country.GB, debug=False, skip_word_validation=False, player_letters_mock=None):
         logger.info(f"Creating new Game instance, debug = {debug}, token = {token}, country = {country}")
         self.country = country
         self.token = token
@@ -48,10 +49,17 @@ class Game:
         self.skip_word_validation = skip_word_validation
         self.letters_bank = LettersBank(country)
         self.board = Board()
+        if not player_letters_mock:
+            player_letters_mock_1 = ['A', 'B', 'D', 'G', 'T', 'E', 'P']
+            player_letters_mock_2 = ['A', 'B', 'D', 'G', 'T', 'E', 'P']
+        else:
+            player_letters_mock_1 = [*player_letters_mock]
+            player_letters_mock_2 = [*player_letters_mock]
+
         # TODO: extend to max 4 players
         self.players = {
-            0: Player("Tom", 0, ['A', 'B', 'D', 'G', 'T', 'E', 'P'] if debug else self.letters_bank.get_x_letters(7)),
-            1: Player("Jerry", 1, ['A', 'B', 'D', 'G', 'T', 'E', 'P'] if debug else self.letters_bank.get_x_letters(7))
+            0: Player("Tom", 0, player_letters_mock_1 if debug else self.letters_bank.get_x_letters(7)),
+            1: Player("Jerry", 1, player_letters_mock_2 if debug else self.letters_bank.get_x_letters(7))
         }
         self.players_number = len(self.players)
         logger.info(f"Created players = {self.players}")
@@ -105,7 +113,7 @@ class Game:
             letter_from_board = self.board.get_tile_letter(letter_tile.x, letter_tile.y)
             logger.info(f"Letter on real board in cell with this coords = '{letter_from_board}'")
             if letter_from_board != ' ':
-                if letter_from_board != letter_tile.letter:
+                if letter_from_board.lower() != letter_tile.letter.lower():
                     logger.info(f"Letters are not equal ({letter_from_board} != {letter_tile.letter}), illegal move")
                     raise exc.IncorrectMoveError("Inaccuracy between move and letters on board")
                 letter_tile.mark_as_not_user_letter()
@@ -143,12 +151,12 @@ class Game:
         list_of_words = self.find_new_words(move)
         move.list_of_words = list_of_words
         logger.info(f"List of new potential words = {list_of_words}")
-        validation_status, incorrect_words = cheater_service.validate_words(list_of_words, self.country.name)
-        if validation_status:
+        try:
+            cheater_service.validate_words(list_of_words, self.country.name)
             logger.info("All words have passed validation")
-        else:
-            logger.info("Not all words have passed validation")
-            raise exc.IncorrectWordError(f"Some words have not passed validation = {incorrect_words}")
+        except (exc.NotParsableResponseError, exc.IncorrectWordError) as e:
+            logger.info(f"Error during validation - {str(e)}")
+            raise e
 
     def find_new_words(self, move):
         return word_finder.find_new_words(self.board, move)
@@ -297,7 +305,7 @@ class LettersBank:
             self.letters.extend([key for _ in range(value)])
 
     def __repr__(self):
-        return str(self.letters)
+        return self.letters
 
     def __str__(self):
         return f"{len(self.letters)} letters = {self.letters}"

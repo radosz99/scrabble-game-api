@@ -20,7 +20,7 @@ init_game.make_move(MoveRequestBody(move="7:G:abp", github_user="radosz99", issu
 games.append(init_game)
 
 
-def get_game_via_token(game_token):
+def get_game_via_token_or_throw_error(game_token):
     for game in games:
         if game.token == game_token:
             return game
@@ -40,30 +40,30 @@ async def initialize_game(country):
     game_token = token_generator.generate(length=12)
     game = Game(token=game_token, country=get_country_via_abbreviation(country))
     games.append(game)
-    return {"game_token": game_token, "detail": "New game has been initialized"}
+    return {"game_token": game_token, "detail": f"New game has been initialized for country = {country}"}
 
 
 @app.get("/status/{game_token}")
 async def get_game_status(game_token):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     return game.get_status_in_json()
 
 
 @app.get("/board-image/{game_token}")
 async def get_board_image(game_token):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     return FileResponse(f"resources/boards/board_{game.token}.png")
 
 
 @app.get("/rack-image/{game_token}")
 async def get_rack_image(game_token):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     return FileResponse(f"resources/racks/rack_{game.token}.png")
 
 
 @app.get("/readme/{game_token}")
 async def get_readme(game_token, repository_path: str = "radosz99/radosz99"):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     readme_parser.save_readme_for_game(game, repository_path)
     return FileResponse(f"resources/readme/readme_{game.token}.txt")
 
@@ -75,7 +75,7 @@ async def get_game_statuses():
 
 @app.post("/replace/{game_token}")
 async def replace_player_letters(game_token, details: ReplaceRequestBody):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     try:
         response = game.letters_replacement(details)
         return {"detail": response}
@@ -85,25 +85,26 @@ async def replace_player_letters(game_token, details: ReplaceRequestBody):
 
 @app.get("/best-moves/{game_token}")
 async def get_possible_moves(game_token):
-    game = get_game_via_token(game_token)
-    return {"moves": game.get_best_moves()}
+    game = get_game_via_token_or_throw_error(game_token)
+    try:
+        return {"moves": game.get_best_moves()}
+    except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
+        logger.debug(e)
+        raise HTTPException(status_code=400, detail="Something wrong with internal server, try again later...")
 
 
 @app.post("/move/{game_token}")
 async def make_move(game_token, details: MoveRequestBody):
-    game = get_game_via_token(game_token)
+    game = get_game_via_token_or_throw_error(game_token)
     try:
         status = game.make_move(details)
         return {"detail": status}
-    except exc.IncorrectMoveError as e:
-        msg = f"Incorrect move, {str(e)}"
+    except (exc.IncorrectMoveError, exc.IncorrectWordError, exc.GameIsOverError) as e:
+        msg = f"Error has occurred = {str(e)}"
         logger.info(msg)
         raise HTTPException(status_code=400, detail=msg)
-    except exc.IncorrectWordError as e:
-        msg = f"Incorrect words created with move, {str(e)}"
-        logger.info(msg)
-        raise HTTPException(status_code=400, detail=msg)
-    except exc.GameIsOverError as e:
-        logger.info(str(e))
-        raise HTTPException(status_code=400, detail=str(e))
+    except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
+        logger.debug(e)
+        raise HTTPException(status_code=400, detail="Something wrong with internal server, try again later...")
+
 

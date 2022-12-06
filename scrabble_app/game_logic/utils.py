@@ -70,6 +70,39 @@ pl_letter_values = {
 
 pl_legal_letters = [key for key in pl_letter_values.keys()] + [key.lower() for key in pl_letter_values.keys()]
 
+es_letter_values = {
+    "A": 1,
+    "B": 3,
+    "C": 3,
+    "CH": 5,
+    "D": 2,
+    "E": 1,
+    "F": 4,
+    "G": 2,
+    "H": 4,
+    "I": 1,
+    "J": 8,
+    "L": 1,
+    "LL": 8,
+    "M": 3,
+    "N": 1,
+    "Ñ": 8,
+    "O": 1,
+    "P": 3,
+    "Q": 5,
+    "R": 1,
+    "RR": 8,
+    "S": 1,
+    "T": 1,
+    "U": 1,
+    "V": 4,
+    "X": 8,
+    "Y": 4,
+    "Z": 10
+}
+
+es_legal_letters = [key for key in es_letter_values.keys()] + [key.lower() for key in es_letter_values.keys()]
+
 gb_occurrences = {
     "A": 9,
     "B": 2,
@@ -134,19 +167,53 @@ pl_occurrences = {
     "Ż": 1
 }
 
+es_occurrences = {
+    "A": 12,
+    "B": 2,
+    "C": 4,
+    "CH": 1,
+    "D": 5,
+    "E": 12,
+    "F": 1,
+    "G": 2,
+    "H": 2,
+    "I": 6,
+    "J": 1,
+    "L": 4,
+    "LL": 1,
+    "M": 2,
+    "N": 5,
+    "Ñ": 1,
+    "O": 9,
+    "P": 2,
+    "Q": 1,
+    "R": 5,
+    "RR": 1,
+    "S": 6,
+    "T": 4,
+    "U": 5,
+    "V": 1,
+    "X": 1,
+    "Y": 1,
+    "Z": 1
+}
+
 occurrences = {
     "GB": gb_occurrences,
-    "PL": pl_occurrences
+    "PL": pl_occurrences,
+    "ES": es_occurrences
 }
 
 letters_values = {
     "GB": gb_letter_values,
-    "PL": pl_letter_values
+    "PL": pl_letter_values,
+    "ES": es_letter_values
 }
 
 legal_letters = {
     "GB": gb_legal_letters,
-    "PL": pl_legal_letters
+    "PL": pl_legal_letters,
+    "ES": es_legal_letters
 }
 
 word_multiplier = [[3, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 3],

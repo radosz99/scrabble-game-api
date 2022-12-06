@@ -8,3 +8,11 @@ class IncorrectWordError(Exception):
 
 class GameIsOverError(Exception):
     pass
+
+
+class NotParsableResponseError(Exception):
+    pass
+
+
+class InternalConnectionError(Exception):
+    pass

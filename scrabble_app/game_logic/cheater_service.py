@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
+from json.decoder import JSONDecodeError
 
 import requests
 from dotenv import load_dotenv
 
+from scrabble_app.game_logic import exceptions as exc
 from scrabble_app.logger import logger
 
 load_dotenv(dotenv_path=Path('local.env'))
@@ -40,11 +42,21 @@ def validate_words(words, country):
     words = [word.lower() for word in words]
     logger.info(f"Validating list of words via cheater service = {words}")
     response = send_post_request(url=f"{VALIDATION_URL}/{country}", json_body={"words": words})
-    return response['status'], get_incorrect_words_from_response(response)
+    if not response['status']:
+        raise exc.IncorrectWordError(f"Some words have not passed validation = {get_incorrect_words_from_response(response)}")
 
 
 def send_post_request(json_body, url):
     logger.info(f"Sending post request to {url} with body = {json_body}")
-    response = requests.post(url, json=json_body).json()
-    logger.info(f"Response {response}")
-    return response
+    try:
+        response = requests.post(url, json=json_body)
+        logger.debug(f"Response {response.text}, parsing to JSON...")
+    except requests.exceptions.ConnectionError as e:
+        raise exc.InternalConnectionError(f"Could not reach the cheater server - str{e})")
+
+    try:
+        response_json = response.json()
+        return response_json
+    except JSONDecodeError as e:
+        raise exc.NotParsableResponseError(f"Cannot parse response, detail: {str(e)}, response: {response.text}")
+
