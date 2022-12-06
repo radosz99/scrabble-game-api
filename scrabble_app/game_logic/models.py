@@ -106,7 +106,7 @@ class Game:
     def validate_move_legality(self, move):
         contains_user_letters, contains_board_letters, middle_filled = False, False, False
         user_letters = self.get_letters_from_player_with_turn()
-        original_letters = user_letters
+        original_letters = copy.copy(user_letters)
         # TODO: refactor with method calls
         for letter_tile in move.tiles:
             logger.info(f"Validating letter tile = {letter_tile}")
