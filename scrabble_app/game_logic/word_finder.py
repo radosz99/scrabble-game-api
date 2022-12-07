@@ -56,15 +56,15 @@ def get_vertical_words_from_horizontal_move(board, move, transposed=False):
     words = []
     for letter_tile in move.get_user_tiles():
         logger.info(f"Searching for vertical words for letter tile = {letter_tile}")
-        word = letter_tile.letter
+        word = [letter_tile.letter]
         x, y = letter_tile.x, letter_tile.y
         letters_before, letters_after = 0, 0
         while not board.check_if_cell_empty(x - 1 - letters_before, y):
             letters_before += 1
-            word = board.get_tile_letter(x - letters_before, y) + word
+            word.insert(0, board.get_tile_letter(x - letters_before, y))
         while not board.check_if_cell_empty(x + 1 + letters_after, y):
             letters_after += 1
-            word = word + board.get_tile_letter(x + letters_after, y)
+            word.append(board.get_tile_letter(x + letters_after, y))
         logger.info(f"Letters before = {letters_before}, after = {letters_after}, created word = '{word}'")
         word = word[::-1] if transposed else word
         if len(word) > 1:

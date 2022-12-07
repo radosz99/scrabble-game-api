@@ -25,7 +25,7 @@ def parse_move_from_response(move):
 
 
 def get_incorrect_words_from_response(response):
-    return [detail['word'] for detail in response['details'] if not detail['exist']]
+    return ["".join(detail['word']) for detail in response['details'] if not detail['exist']]
 
 
 def get_best_moves_from_response(response):

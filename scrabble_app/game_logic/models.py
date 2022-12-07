@@ -53,8 +53,8 @@ class Game:
             player_letters_mock_1 = ['A', 'B', 'D', 'G', 'T', 'E', 'P']
             player_letters_mock_2 = ['A', 'B', 'D', 'G', 'T', 'E', 'P']
         else:
-            player_letters_mock_1 = [*player_letters_mock]
-            player_letters_mock_2 = [*player_letters_mock]
+            player_letters_mock_1 = player_letters_mock
+            player_letters_mock_2 = player_letters_mock
 
         # TODO: extend to max 4 players
         self.players = {
@@ -83,6 +83,7 @@ class Game:
         move.issue_number = details.issue_number
         logger.info(f"Player with id = {self.whose_turn} wants to make a move {move}")
         self.validate_move_legality(move)
+        logger.info("Legal move")
         move.legal = True
         if not self.skip_word_validation:
             self.validate_words_from_move(move)
