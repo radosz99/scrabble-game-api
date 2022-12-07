@@ -36,7 +36,10 @@ def get_best_moves(letters, board, country):
     logger.info("Getting best moves")
     response = send_post_request(url=f"{CHEATER_URL}/{country}", json_body={"letters": letters, "board": board})
     logger.debug(f"Response: {response}")
-    return get_best_moves_from_response(response)
+    if "moves" not in response:
+        raise exc.NotParsableResponseError(str(response))
+    else:
+        return get_best_moves_from_response(response)
 
 
 def validate_words(words, country):

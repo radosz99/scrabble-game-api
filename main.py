@@ -89,8 +89,9 @@ async def get_possible_moves(game_token):
     try:
         return {"moves": game.get_best_moves()}
     except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
-        logger.debug(e)
-        raise HTTPException(status_code=400, detail="Something wrong with internal server, try again later...")
+        msg = "Something wrong with internal server, try again later..."
+        logger.debug(f"{msg} - {str(e)}")
+        raise HTTPException(status_code=400, detail=msg)
 
 
 @app.post("/move/{game_token}")
