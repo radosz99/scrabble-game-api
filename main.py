@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from starlette.concurrency import run_in_threadpool
 
 from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody, Country
 from scrabble_app.game_logic import exceptions as exc
@@ -87,7 +88,8 @@ async def replace_player_letters(game_token, details: ReplaceRequestBody):
 async def get_possible_moves(game_token):
     game = get_game_via_token_or_throw_error(game_token)
     try:
-        return {"moves": game.get_best_moves()}
+        moves = await run_in_threadpool(game.get_best_moves)
+        return {"moves": moves}
     except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
         msg = "Something wrong with internal server, try again later..."
         logger.debug(f"{msg} - {str(e)}")

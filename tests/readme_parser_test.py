@@ -1,12 +1,9 @@
 import unittest
 
-import token_generator
 from scrabble_app.readme_parser import parser as readme_parser
 from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError
 from scrabble_app.logger import logger
-
-token = token_generator.generate()
 
 
 def make_move(game, move):
@@ -26,6 +23,7 @@ class Testing(unittest.TestCase):
         game.letters_replacement(ReplaceRequestBody(letters="GD", github_user="radosz99", issue_title=f"scrabble|replace|GD",issue_number="1"))
         make_move(game, "7:G:abp")
         print(readme_parser.save_readme_for_game(game, "radosz99/test_repo"))
+        # TODO: add end to end test with mocked FastAPI
 
 
 if __name__ == "__main__":

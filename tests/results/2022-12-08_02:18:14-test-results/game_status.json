@@ -1,0 +1,1592 @@
+{
+    "initialize_timestamp": "2022-12-08T02:18:05.403964",
+    "winner_id": 1,
+    "status": "FINISHED",
+    "last_move_timestamp": "2022-12-08T02:18:14.071106",
+    "whose_turn": 0,
+    "players": {
+        "0": {
+            "name": "Tom",
+            "id": 0,
+            "letters": [
+                "\u00d1",
+                "S",
+                "O",
+                "O"
+            ],
+            "points": 210
+        },
+        "1": {
+            "name": "Jerry",
+            "id": 1,
+            "letters": [],
+            "points": 447
+        }
+    },
+    "board": {
+        "board": [
+            [
+                "E",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                "B"
+            ],
+            [
+                "L",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                "E",
+                "J",
+                "E",
+                "S",
+                " ",
+                " ",
+                "O"
+            ],
+            [
+                "Q",
+                " ",
+                "H",
+                " ",
+                " ",
+                " ",
+                "B",
+                " ",
+                " ",
+                "U",
+                " ",
+                " ",
+                "I",
+                " ",
+                "R"
+            ],
+            [
+                "U",
+                " ",
+                "A",
+                " ",
+                " ",
+                "D",
+                "E",
+                "T",
+                "U",
+                "R",
+                "P",
+                "A",
+                "S",
+                " ",
+                "I"
+            ],
+            [
+                "I",
+                " ",
+                "N",
+                " ",
+                " ",
+                " ",
+                "L",
+                " ",
+                " ",
+                " ",
+                "O",
+                " ",
+                "I",
+                " ",
+                "C"
+            ],
+            [
+                "N",
+                " ",
+                "G",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                "T",
+                "E",
+                "LL",
+                " ",
+                "A",
+                "Y",
+                "O"
+            ],
+            [
+                "A",
+                " ",
+                "A",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                "E",
+                " ",
+                "C",
+                " ",
+                " "
+            ],
+            [
+                "S",
+                "U",
+                "R",
+                "F",
+                " ",
+                "E",
+                " ",
+                "A",
+                "RR",
+                "A",
+                "Z",
+                " ",
+                "A",
+                "H",
+                "E"
+            ],
+            [
+                " ",
+                " ",
+                " ",
+                "E",
+                " ",
+                "M",
+                " ",
+                "R",
+                " ",
+                "D",
+                " ",
+                " ",
+                " ",
+                "A",
+                " "
+            ],
+            [
+                " ",
+                "CH",
+                "A",
+                "L",
+                " ",
+                "I",
+                " ",
+                "D",
+                " ",
+                "V",
+                " ",
+                " ",
+                " ",
+                "M",
+                " "
+            ],
+            [
+                " ",
+                "U",
+                " ",
+                "P",
+                " ",
+                "T",
+                " ",
+                "E",
+                " ",
+                "E",
+                "X",
+                " ",
+                "C",
+                "O",
+                "N"
+            ],
+            [
+                " ",
+                "D",
+                " ",
+                "O",
+                "C",
+                "I",
+                "A",
+                "D",
+                " ",
+                "N",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "
+            ],
+            [
+                " ",
+                "O",
+                " ",
+                " ",
+                " ",
+                "E",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "
+            ],
+            [
+                " ",
+                "S",
+                " ",
+                " ",
+                " ",
+                "R",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "
+            ],
+            [
+                "G",
+                "O",
+                "L",
+                " ",
+                "S",
+                "A",
+                "N",
+                "T",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " "
+            ]
+        ]
+    },
+    "letters_bank": {
+        "letters": [],
+        "country": 3
+    },
+    "moves": [
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 7,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 8,
+                    "letter": "RR",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 9,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 10,
+                    "letter": "Z",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 40,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:05.436137",
+            "list_of_words": [
+                "ARRAZ"
+            ],
+            "player_id": 0,
+            "move_string": "7:H:arraz"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 3,
+                    "y": 10,
+                    "letter": "P",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 10,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 10,
+                    "letter": "LL",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 6,
+                    "y": 10,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 10,
+                    "letter": "Z",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 46,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:05.526536",
+            "list_of_words": [
+                "POLLEZ"
+            ],
+            "player_id": 1,
+            "move_string": "K:3:pollez"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 5,
+                    "y": 8,
+                    "letter": "T",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 9,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 10,
+                    "letter": "LL",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 12,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:05.613382",
+            "list_of_words": [
+                "TELL"
+            ],
+            "player_id": 0,
+            "move_string": "5:I:tell"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 9,
+                    "letter": "A",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 8,
+                    "y": 9,
+                    "letter": "D",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 9,
+                    "letter": "V",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 9,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 9,
+                    "letter": "N",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 17,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:05.723398",
+            "list_of_words": [
+                "ADVEN"
+            ],
+            "player_id": 1,
+            "move_string": "J:7:adven"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 10,
+                    "y": 9,
+                    "letter": "E",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 10,
+                    "letter": "X",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 18,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:05.810696",
+            "list_of_words": [
+                "EX"
+            ],
+            "player_id": 0,
+            "move_string": "10:J:ex"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 3,
+                    "y": 5,
+                    "letter": "D",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 6,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 7,
+                    "letter": "T",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 8,
+                    "letter": "U",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 9,
+                    "letter": "R",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 10,
+                    "letter": "P",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 11,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 12,
+                    "letter": "S",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 74,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.060472",
+            "list_of_words": [
+                "DETURPAS"
+            ],
+            "player_id": 1,
+            "move_string": "3:F:deturpas"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 2,
+                    "y": 6,
+                    "letter": "B",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 6,
+                    "letter": "E",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 6,
+                    "letter": "L",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 8,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.172683",
+            "list_of_words": [
+                "BEL"
+            ],
+            "player_id": 0,
+            "move_string": "G:2:bel"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 2,
+                    "y": 12,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 12,
+                    "letter": "S",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 12,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 12,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 6,
+                    "y": 12,
+                    "letter": "C",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 12,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 22,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.336027",
+            "list_of_words": [
+                "ISIACA"
+            ],
+            "player_id": 1,
+            "move_string": "M:2:isiaca"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 1,
+                    "y": 9,
+                    "letter": "J",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 2,
+                    "y": 9,
+                    "letter": "U",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 9,
+                    "letter": "R",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 26,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.433163",
+            "list_of_words": [
+                "JUR"
+            ],
+            "player_id": 0,
+            "move_string": "J:1:jur"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 1,
+                    "y": 8,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 1,
+                    "y": 9,
+                    "letter": "J",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 1,
+                    "y": 10,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 1,
+                    "y": 11,
+                    "letter": "S",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 11,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.551758",
+            "list_of_words": [
+                "EJES"
+            ],
+            "player_id": 1,
+            "move_string": "1:I:ejes"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 7,
+                    "letter": "A",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 8,
+                    "y": 7,
+                    "letter": "R",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 7,
+                    "letter": "D",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 7,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 7,
+                    "letter": "D",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 9,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:06.763174",
+            "list_of_words": [
+                "ARDED"
+            ],
+            "player_id": 0,
+            "move_string": "H:7:arded"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 11,
+                    "y": 3,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 4,
+                    "letter": "C",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 5,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 6,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 7,
+                    "letter": "D",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 16,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:07.001522",
+            "list_of_words": [
+                "OCIAD"
+            ],
+            "player_id": 1,
+            "move_string": "11:D:ociad"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 12,
+                    "letter": "A",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 13,
+                    "letter": "H",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 14,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 18,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:07.739383",
+            "list_of_words": [
+                "AHE"
+            ],
+            "player_id": 0,
+            "move_string": "7:M:ahe"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 5,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 8,
+                    "y": 5,
+                    "letter": "M",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 5,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 5,
+                    "letter": "T",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 5,
+                    "letter": "I",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 12,
+                    "y": 5,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 13,
+                    "y": 5,
+                    "letter": "R",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 5,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 64,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:08.589450",
+            "list_of_words": [
+                "EMITIERA"
+            ],
+            "player_id": 1,
+            "move_string": "F:7:emitiera"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 14,
+                    "y": 4,
+                    "letter": "S",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 5,
+                    "letter": "A",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 6,
+                    "letter": "N",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 7,
+                    "letter": "T",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 12,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:08.980250",
+            "list_of_words": [
+                "SANT"
+            ],
+            "player_id": 0,
+            "move_string": "14:E:sant"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 13,
+                    "letter": "H",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 8,
+                    "y": 13,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 13,
+                    "letter": "M",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 13,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 15,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:09.225119",
+            "list_of_words": [
+                "HAMO"
+            ],
+            "player_id": 1,
+            "move_string": "N:7:hamo"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 5,
+                    "y": 12,
+                    "letter": "A",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 13,
+                    "letter": "Y",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 14,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 14,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:09.499278",
+            "list_of_words": [
+                "AYO"
+            ],
+            "player_id": 0,
+            "move_string": "5:M:ayo"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 0,
+                    "y": 14,
+                    "letter": "B",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 1,
+                    "y": 14,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 2,
+                    "y": 14,
+                    "letter": "R",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 14,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 14,
+                    "letter": "C",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 14,
+                    "letter": "O",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 33,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:09.894262",
+            "list_of_words": [
+                "BORICO"
+            ],
+            "player_id": 1,
+            "move_string": "O:0:borico"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 3,
+                    "letter": "F",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 8,
+                    "y": 3,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 3,
+                    "letter": "L",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 3,
+                    "letter": "P",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 3,
+                    "letter": "O",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 14,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:10.142530",
+            "list_of_words": [
+                "FELPO"
+            ],
+            "player_id": 0,
+            "move_string": "D:7:felpo"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 9,
+                    "y": 1,
+                    "letter": "CH",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 2,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 9,
+                    "y": 3,
+                    "letter": "L",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 17,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:10.548006",
+            "list_of_words": [
+                "CHAL"
+            ],
+            "player_id": 1,
+            "move_string": "9:B:chal"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 10,
+                    "y": 12,
+                    "letter": "C",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 13,
+                    "letter": "O",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 14,
+                    "letter": "N",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 5,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:10.705526",
+            "list_of_words": [
+                "CON"
+            ],
+            "player_id": 0,
+            "move_string": "10:M:con"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 9,
+                    "y": 1,
+                    "letter": "CH",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 10,
+                    "y": 1,
+                    "letter": "U",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 11,
+                    "y": 1,
+                    "letter": "D",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 12,
+                    "y": 1,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 13,
+                    "y": 1,
+                    "letter": "S",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 1,
+                    "letter": "O",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 22,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:10.932025",
+            "list_of_words": [
+                "CHUDOSO"
+            ],
+            "player_id": 1,
+            "move_string": "B:9:chudoso"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 14,
+                    "y": 0,
+                    "letter": "G",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 1,
+                    "letter": "O",
+                    "user_letter": false,
+                    "country": 3
+                },
+                {
+                    "x": 14,
+                    "y": 2,
+                    "letter": "L",
+                    "user_letter": true,
+                    "country": 3
+                }
+            ],
+            "points": 12,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:11.293124",
+            "list_of_words": [
+                "GOL"
+            ],
+            "player_id": 0,
+            "move_string": "14:A:gol"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 7,
+                    "y": 0,
+                    "letter": "S",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 1,
+                    "letter": "U",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 2,
+                    "letter": "R",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 3,
+                    "letter": "F",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 21,
+            "orientation": 2,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:12.130013",
+            "list_of_words": [
+                "SURF"
+            ],
+            "player_id": 1,
+            "move_string": "7:A:surf"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 2,
+                    "y": 2,
+                    "letter": "H",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 2,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 2,
+                    "letter": "N",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 2,
+                    "letter": "G",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 6,
+                    "y": 2,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 2,
+                    "letter": "R",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 22,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:12.809259",
+            "list_of_words": [
+                "HANGAR"
+            ],
+            "player_id": 0,
+            "move_string": "C:2:hangar"
+        },
+        {
+            "tiles": [
+                {
+                    "x": 0,
+                    "y": 0,
+                    "letter": "E",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 1,
+                    "y": 0,
+                    "letter": "L",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 2,
+                    "y": 0,
+                    "letter": "Q",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 3,
+                    "y": 0,
+                    "letter": "U",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 4,
+                    "y": 0,
+                    "letter": "I",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 5,
+                    "y": 0,
+                    "letter": "N",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 6,
+                    "y": 0,
+                    "letter": "A",
+                    "user_letter": true,
+                    "country": 3
+                },
+                {
+                    "x": 7,
+                    "y": 0,
+                    "letter": "S",
+                    "user_letter": false,
+                    "country": 3
+                }
+            ],
+            "points": 89,
+            "orientation": 1,
+            "valid": true,
+            "legal": true,
+            "country": 3,
+            "github_user": "radosz99",
+            "issue_number": "debug_number",
+            "issue_title": "debug_title",
+            "creation_date": "2022-12-08T02:18:13.969245",
+            "list_of_words": [
+                "ELQUINAS"
+            ],
+            "player_id": 1,
+            "move_string": "A:0:elquinas"
+        }
+    ]
+}

@@ -49,6 +49,8 @@ def validate_words(words, country):
     logger.debug(f"Response: {response}")
     if not response['status']:
         raise exc.IncorrectWordError(f"Some words have not passed validation = {get_incorrect_words_from_response(response)}")
+    else:
+        logger.info("Validation successful")
 
 
 def send_post_request(json_body, url):

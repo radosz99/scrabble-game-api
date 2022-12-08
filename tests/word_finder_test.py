@@ -2,7 +2,8 @@ import unittest
 
 from scrabble_app.game_logic.word_finder import find_new_words
 from scrabble_app.game_logic.models import Country, Board, Game
-from scrabble_app.game_logic import move_parser, cheater_service
+from scrabble_app.game_logic import move_parser, cheater_service, exceptions
+from scrabble_app.logger import logger
 
 
 class Testing(unittest.TestCase):
@@ -32,9 +33,12 @@ class Testing(unittest.TestCase):
         move = move_parser.parse_move(move_string, Country.GB)
         game.validate_move_legality(move)
         new_words = find_new_words(board_instance, move)
-        validation_status, incorrect_words = cheater_service.validate_words(new_words, country.name)
-        print(validation_status)
-        print(incorrect_words)
+        new_words = ["".join(word) for word in new_words]
+        logger.info(f"New words = {new_words}")
+        try:
+            cheater_service.validate_words(new_words, country.name)
+        except exceptions.IncorrectWordError as e:
+            print(e)
         print(move.evaluate())
         self.assertEqual(len(board), 15)
 

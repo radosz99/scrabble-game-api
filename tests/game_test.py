@@ -10,7 +10,6 @@ game_token = "24m829t"
 def make_move(game, move):
     try:
         game.make_move(MoveRequestBody(move=move, github_user="radosz99", issue_title=f"scrabble|move|{move}",issue_number="1"))
-        game.print_board()
     except IncorrectMoveError as e:
         logger.info(f"Incorrect move = {str(e)}")
     except IncorrectWordError as e:
@@ -33,13 +32,14 @@ class Testing(unittest.TestCase):
         print(game.get_best_moves())
         print(game.get_status_in_json())
 
-    # @unittest.skip("Letters replacement")
+    @unittest.skip("Letters replacement")
     def test_game_2(self):
         game = Game(debug=True, token=game_token, skip_word_validation=True)
         make_move(game, "7:G:ab")
         make_move(game, "7:G:abp")
         print(game.get_short_status_in_json())
 
+    @unittest.skip("")
     def test_letters_replacement(self):
         game = Game(debug=True, token=game_token, skip_word_validation=True)
         game.letters_replacement(ReplaceRequestBody(letters="GD", github_user="radosz99", issue_title=f"scrabble|replace|GD",issue_number="1") )

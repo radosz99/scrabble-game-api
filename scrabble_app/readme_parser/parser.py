@@ -6,7 +6,7 @@ from scrabble_app.logger import logger
 
 def save_readme_for_game(game, repository_path):
     readme = get_readme_for_game(game, repository_path)
-    logger.info(f"Readme for game with token {game.token}: \n {readme}")
+    logger.debug(f"Readme for game with token {game.token}: \n {readme}")
     try:
         os.mkdir("resources/readme")
     except FileExistsError:

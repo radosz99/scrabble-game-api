@@ -93,8 +93,8 @@ class Game:
         letters_before = "".join(self.get_letters_from_player_with_turn())
         self.proceed_after_turn(move)
         self.last_move_timestamp = datetime.now()
-        msg = f"Valid move, points = {move.points}, created words = {move.list_of_words}, player's letters before the move = " \
-               f"{letters_before}"
+        msg = f"Valid move, points = {move.points}, created words = {move.list_of_words}, player's letters before " \
+              f"the move = {letters_before}"
         if self.status == GameStatus.FINISHED:
             msg += f", game is over, winner = {self.players[self.winner_id].name}!"
         return msg
@@ -110,41 +110,41 @@ class Game:
         original_letters = copy.copy(user_letters)
         # TODO: refactor with method calls
         for letter_tile in move.tiles:
-            logger.info(f"Validating letter tile = {letter_tile}")
+            logger.debug(f"Validating letter tile = {letter_tile}")
             letter_from_board = self.board.get_tile_letter(letter_tile.x, letter_tile.y)
-            logger.info(f"Letter on real board in cell with this coords = '{letter_from_board}'")
+            logger.debug(f"Letter on real board in cell with this coords = '{letter_from_board}'")
             if letter_from_board != ' ':
                 if letter_from_board.lower() != letter_tile.letter.lower():
-                    logger.info(f"Letters are not equal ({letter_from_board} != {letter_tile.letter}), illegal move")
+                    logger.debug(f"Letters are not equal ({letter_from_board} != {letter_tile.letter}), illegal move")
                     raise exc.IncorrectMoveError("Inaccuracy between move and letters on board")
                 letter_tile.mark_as_not_user_letter()
                 contains_board_letters = True
-                logger.info("Letter from board, has been marked as a not player letter")
+                logger.debug("Letter from board, has been marked as a not player letter")
             else:
                 try:
-                    logger.info("Checking if it in player's letters")
+                    logger.debug("Checking if it in player's letters")
                     user_letters.remove(letter_tile.letter)
-                    logger.info(f"Player's letters = {self.get_letters_from_player_with_turn()}")
-                    logger.info("Letter is in player's letters")
+                    logger.debug(f"Player's letters = {self.get_letters_from_player_with_turn()}")
+                    logger.debug("Letter is in player's letters")
                     if self.empty_board() and letter_tile.x == 7 and letter_tile.y == 7:
-                        logger.info("Letter is in the middle - 7,7 coordinates")
+                        logger.debug("Letter is in the middle - 7,7 coordinates")
                         middle_filled = True
                 except ValueError:
-                    logger.info("Letter is not in player's letters")
+                    logger.debug("Letter is not in player's letters")
                     raise exc.IncorrectMoveError(f"Some illegal letters in move - {letter_tile.letter}, "
                                                  f"player letters = {original_letters}")
                 contains_user_letters = True
 
         if self.empty_board():
             if not contains_user_letters:
-                logger.info("No user letters")
+                logger.debug("No user letters")
                 raise exc.IncorrectMoveError("Move should contain both - player and board letters (at least 1)")
             if not middle_filled:
-                logger.info("No letter with the middle coordinates - 7,7")
+                logger.debug("No letter with the middle coordinates - 7,7")
                 raise exc.IncorrectMoveError("Move should contain letter in the middle of the board")
         else:
             if not contains_board_letters or not contains_user_letters:
-                logger.info(f"Wrong letters, contains board letters = {contains_board_letters}, player letters = "
+                logger.debug(f"Wrong letters, contains board letters = {contains_board_letters}, player letters = "
                             f"{contains_user_letters}")
                 raise exc.IncorrectMoveError("Move should contain both - player and board letters (at least 1)")
 
@@ -195,7 +195,7 @@ class Game:
 
     def letters_replacement(self, details):
         logger.info(f"Replacing letters with details = {details}")
-        letters_to_replace = details.letters.upper()
+        letters_to_replace = details.letters.upper() # TODO: test with spanish doubles
         player = self.get_current_player()
         valid_letters = player.check_if_letters_in_players_letters(letters_to_replace)
         if valid_letters:
@@ -217,15 +217,15 @@ class Game:
             raise exc.IncorrectMoveError(f"Invalid letters to replace, players letters = {player.get_letters()}")
 
     def get_current_player(self):
-        logger.info(f"Getting current player with id = {self.whose_turn}")
+        logger.debug(f"Getting current player with id = {self.whose_turn}")
         return self.players[self.whose_turn]
 
     def check_if_game_is_over(self):
         logger.info("Checking if game has finished")
         if self.letters_bank.empty():
-            logger.info("Empty letters bank, checking players letters")
+            logger.debug("Empty letters bank, checking players letters")
             for player in self.players.values():
-                logger.info(f"Checking player {player.name}, has letters = {player.has_letters()}, letters = {player.get_letters_string()}")
+                logger.debug(f"Checking player {player.name}, has letters = {player.has_letters()}, letters = {player.get_letters_string()}")
                 if not player.has_letters():
                     logger.info("No letters, game is over")
                     self.winner_id = self.get_winner()
@@ -259,18 +259,18 @@ class Game:
         logger.info(f"Changing turn to player with id = {self.whose_turn}")
 
     def get_letters_from_player_with_turn(self):
-        logger.info("Getting letters from player with turn")
+        logger.debug("Getting letters from player with turn")
         return self.get_current_player().get_letters()
 
     def empty_board(self):
         return self.board.empty_board()
 
     def get_best_moves(self):
-        player_letters = self.get_current_player().get_letters_string()
+        player_letters = self.get_current_player().letters
         return cheater_service.get_best_moves(player_letters, self.board.get_board_copy(), self.country.name)
 
     def print_board(self):
-        logger.info(f"Current board status: \n{self.board.get_board_string()}")
+        logger.debug(f"Current board status: \n{self.board.get_board_string()}")
 
     def get_status_in_json(self):
         return {
@@ -306,23 +306,23 @@ class LettersBank:
             self.letters.extend([key for _ in range(value)])
 
     def __repr__(self):
-        return self.letters
+        return str(self.letters)
 
     def __str__(self):
         return f"{len(self.letters)} letters = {self.letters}"
 
     def get_x_letters(self, number):
         chosen_letters = []
-        logger.info(f"Getting {number} letters from bank, current bank status is {len(self.letters)} letters = "
+        logger.debug(f"Getting {number} letters from bank, current bank status is {len(self.letters)} letters = "
                     f"{self.letters}")
         for _ in range(number):
             if len(self.letters) > 0:
                 index = random.randint(0, len(self.letters) - 1)
                 letter = self.letters.pop(index)
-                logger.info(f"'{letter}' has been drawn, letters left = {len(self.letters)}")
+                logger.debug(f"'{letter}' has been drawn, letters left = {len(self.letters)}")
                 chosen_letters.append(letter)
             else:
-                logger.info("No more letters in bank")
+                logger.debug("No more letters in bank")
                 break
         return chosen_letters
 
@@ -334,7 +334,7 @@ class LettersBank:
             old_letters.remove(letter)
             new_letters.append(letter)
         self.letters.extend(old_letters)
-        logger.info(f"Letters bank has been extended of {len(old_letters)} letters = {old_letters}")
+        logger.debug(f"Letters bank has been extended of {len(old_letters)} letters = {old_letters}")
         return new_letters
 
     def empty(self):
@@ -426,12 +426,12 @@ class Player:
         return True
 
     def remove_letters(self, letters_list):
-        logger.info(f"Removing letters from player's rack = {letters_list}")
+        logger.debug(f"Removing letters from player's rack = {letters_list}")
         for letter in letters_list:
             try:
                 self.letters.remove(letter)
             except ValueError:
-                logger.info("Letter not in the list")
+                logger.debug("Letter not in the list")
                 return False
         return True
 

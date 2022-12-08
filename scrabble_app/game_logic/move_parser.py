@@ -24,9 +24,9 @@ def can_convert_to_int(string):
 
 
 def parse_move(move_string, country):
-    logger.info(f"Parsing move = {move_string}")
+    logger.debug(f"Parsing move = {move_string}")
     first_coord, second_coord, letters = validate_move_string(move_string)
-    logger.info(f"First coord = {first_coord}, second coord = {second_coord}, letters = {letters}")
+    logger.debug(f"First coord = {first_coord}, second coord = {second_coord}, letters = {letters}")
     if can_convert_to_int(first_coord) and isinstance(second_coord, str) and len(second_coord) == 1:
         x_coord = int(first_coord)
         y_coord = ord(second_coord) - 65
@@ -41,7 +41,7 @@ def parse_move(move_string, country):
     for letter in letters_list:
         if letter not in utils.legal_letters[country.name]:
             raise IncorrectMoveError(f"Move should contain only letters from {country.name} dictionary")
-    logger.info(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
+    logger.debug(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
     return Move(x_coord, y_coord, letters_list, orientation, move_string, country)
 
 

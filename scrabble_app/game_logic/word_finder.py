@@ -8,15 +8,16 @@ def find_new_words(board, move):
     list_of_words = []
     logger.info("Finding new words created with move")
     if board.empty_board():
-        logger.info("Empty board, so there is just one word")
+        logger.debug("Empty board, so there is just one word")
         list_of_words.append(move.get_word())
     else:
         if move.orientation is move_parser.Orientation.HORIZONTAL:
-            logger.info("Horizontal move")
+            logger.debug("Horizontal move")
             list_of_words = get_words_from_horizontal_move(board, move)
         elif move.orientation is move_parser.Orientation.VERTICAL:
-            logger.info("Vertical move")
+            logger.debug("Vertical move")
             list_of_words = get_words_from_vertical_move(board, move)
+    logger.info(f"Words = {list_of_words}")
     return list_of_words
 
 
@@ -31,9 +32,9 @@ def get_words_from_vertical_move(board, move):
     move = copy.deepcopy(move)
     board.transpose()
     move = transpose_move(move)
-    logger.info("Transposing board and move")
-    logger.info(f"Transposed board: \n{board.get_board_string()}")
-    logger.info(f"Transposed move = {move}")
+    logger.debug("Transposing board and move")
+    logger.debug(f"Transposed board: \n{board.get_board_string()}")
+    logger.debug(f"Transposed move = {move}")
     return get_words_from_horizontal_move(board, move, transposed=True)
 
 
@@ -55,7 +56,7 @@ def get_horizontal_word(board, move):
 def get_vertical_words_from_horizontal_move(board, move, transposed=False):
     words = []
     for letter_tile in move.get_user_tiles():
-        logger.info(f"Searching for vertical words for letter tile = {letter_tile}")
+        logger.debug(f"Searching for vertical words for letter tile = {letter_tile}")
         word = [letter_tile.letter]
         x, y = letter_tile.x, letter_tile.y
         letters_before, letters_after = 0, 0
@@ -65,10 +66,10 @@ def get_vertical_words_from_horizontal_move(board, move, transposed=False):
         while not board.check_if_cell_empty(x + 1 + letters_after, y):
             letters_after += 1
             word.append(board.get_tile_letter(x + letters_after, y))
-        logger.info(f"Letters before = {letters_before}, after = {letters_after}, created word = '{word}'")
+        logger.debug(f"Letters before = {letters_before}, after = {letters_after}, created word = '{word}'")
         word = word[::-1] if transposed else word
         if len(word) > 1:
-            logger.info("Word has been added to the list")
+            logger.debug("Word has been added to the list")
             words.append(word)
     return words
 
