@@ -1,3 +1,26 @@
+def parse_letters_string_to_list(country, letters):
+    letters = letters.upper()
+    letters_list = []
+    skip_next = False
+    for index, letter in enumerate(letters):
+        if skip_next:
+            skip_next = False
+            continue
+        if country.name == "ES" and index < len(letters) - 1:
+            letter, skip_next = check_if_contains_spanish_doubles(letters, index)
+        letters_list.append(letter)
+    return letters_list
+
+
+def check_if_contains_spanish_doubles(word, index):
+    word = word.upper()
+    spanish_doubles = ['LL', 'RR', 'CH']
+    if (double := word[index:index + 2]) in spanish_doubles:
+        return double, True
+    else:
+        return word[index], False
+
+
 def get_empty_board():
     return [[' ' for _ in range(15)] for _ in range(15)]
 

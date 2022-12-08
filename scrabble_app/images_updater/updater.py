@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 
-from . import constants as const
+from scrabble_app import constants as const
 from scrabble_app.logger import logger
 
 
@@ -41,7 +41,10 @@ def update_rack_with_letters(game_token, letters_list, country):
     img = Image.new('RGB', (46*7, 46), color=(230, 230, 230))
     draw = ImageDraw.Draw(img)
     for index, letter in enumerate(letters_list):
-        tile = Image.open(f"resources/tiles/{country}/{letter.upper()}.png").convert("RGBA")
-        img.paste(tile, (46 * index, 0), tile)
-        draw.line((46 * index, 0, 46 * index, 46) + img.size, fill=256)
+        try:
+            tile = Image.open(f"resources/tiles/{country}/{letter.upper()}.png").convert("RGBA")
+            img.paste(tile, (46 * index, 0), tile)
+            draw.line((46 * index, 0, 46 * index, 46) + img.size, fill=256)
+        except FileNotFoundError as e:
+            logger.info(f"Could not find file with tile - {str(e)}")
     save_rack(img, game_token)

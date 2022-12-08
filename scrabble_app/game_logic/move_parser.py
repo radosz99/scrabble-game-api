@@ -37,37 +37,13 @@ def parse_move(move_string, country):
         orientation = Orientation.VERTICAL
     else:
         raise IncorrectMoveError("Move should be formatted like this - 8:A:KNIFE or B:13:TREE")
-    letters_list = parse_letters_to_list(country, letters)
+    letters_list = utils.parse_letters_string_to_list(country, letters)
     for letter in letters_list:
         if letter not in utils.legal_letters[country.name]:
             raise IncorrectMoveError(f"Move should contain only letters from {country.name} dictionary")
     logger.debug(f"Move parsed, x coord = {x_coord}, y coord = {y_coord}, letters = {letters}, orientation = {orientation}")
     return Move(x_coord, y_coord, letters_list, orientation, move_string, country)
 
-
-def parse_letters_to_list(country, letters):
-    letters = letters.lower()
-    logger.debug(f"Parsing letters string - {letters}")
-    letters_list = []
-    skip_next = False
-    for index, letter in enumerate(letters):
-        if skip_next:
-            skip_next = False
-            continue
-        if country.name == "ES" and index < len(letters) - 1:
-            letter, skip_next = check_if_contains_spanish_doubles(letters, index)
-        letters_list.append(letter)
-    logger.debug(f"Parsed letters string - {letters_list}")
-    return letters_list
-
-
-def check_if_contains_spanish_doubles(word, index):
-    word = word.lower()
-    spanish_doubles = ['ll', 'rr', 'ch']
-    if (double := word[index:index + 2]) in spanish_doubles:
-        return double, True
-    else:
-        return word[index].lower(), False
 
 class Replace:
     def __init__(self, letters, github_user, issue_title, issue_number):

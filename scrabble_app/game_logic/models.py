@@ -114,7 +114,7 @@ class Game:
             letter_from_board = self.board.get_tile_letter(letter_tile.x, letter_tile.y)
             logger.debug(f"Letter on real board in cell with this coords = '{letter_from_board}'")
             if letter_from_board != ' ':
-                if letter_from_board.lower() != letter_tile.letter.lower():
+                if letter_from_board.upper() != letter_tile.letter.upper():
                     logger.debug(f"Letters are not equal ({letter_from_board} != {letter_tile.letter}), illegal move")
                     raise exc.IncorrectMoveError("Inaccuracy between move and letters on board")
                 letter_tile.mark_as_not_user_letter()
@@ -155,7 +155,7 @@ class Game:
         try:
             cheater_service.validate_words(list_of_words, self.country.name)
             logger.info("All words have passed validation")
-        except (exc.NotParsableResponseError, exc.IncorrectWordError) as e:
+        except (exc.InternalConnectionError, exc.IncorrectWordError) as e:
             logger.info(f"Error during validation - {str(e)}")
             raise e
 
@@ -173,9 +173,8 @@ class Game:
                 self.update_player_letters(player, move)
             logger.info(f"Player has got new letters, current player status = {player}")
             self.switch_turn()
-            logger.info(f"Changing turn, it is turn of player with id = {self.whose_turn}")
             player.points += move.points
-            logger.info(f"Player's points increased by {move.points}, currently {player.points}")
+            logger.info(f"Player's points increased by {move.points}, currently has {player.points} points")
             self.update_images(move)
             self.first_turn = False
             if self.check_if_game_is_over():
@@ -195,12 +194,12 @@ class Game:
 
     def letters_replacement(self, details):
         logger.info(f"Replacing letters with details = {details}")
-        letters_to_replace = details.letters.upper() # TODO: test with spanish doubles
+        letters_to_replace = utils.parse_letters_string_to_list(self.country, details.letters)
         player = self.get_current_player()
-        valid_letters = player.check_if_letters_in_players_letters(letters_to_replace)
-        if valid_letters:
+        illegal_letters = player.get_not_user_letters(letters_to_replace)
+        if not illegal_letters:
             move = move_parser.Replace(letters_to_replace, details.github_user, details.issue_title, details.issue_number)
-            player.remove_letters([*letters_to_replace.upper()])
+            player.remove_letters(letters_to_replace)
             new_letters = self.letters_bank.replace_x_letters(letters_to_replace)
             player.give_letters(new_letters)
             move.new_letters = "".join(new_letters)
@@ -214,7 +213,7 @@ class Game:
             self.moves.append(move)
             return msg
         else:
-            raise exc.IncorrectMoveError(f"Invalid letters to replace, players letters = {player.get_letters()}")
+            raise exc.IncorrectMoveError(f"Invalid letters to replace ({illegal_letters}), players letters = {player.get_letters()}")
 
     def get_current_player(self):
         logger.debug(f"Getting current player with id = {self.whose_turn}")
@@ -232,6 +231,7 @@ class Game:
                     logger.info(f"Winner id = {self.winner_id}, points = {self.players[self.winner_id].points}")
                     return True
         else:
+            logger.info("Game is still in progress")
             return False
 
     def get_winner(self):
@@ -419,11 +419,8 @@ class Player:
                 'points': self.points,
                 'letters': "".join(self.letters)}
 
-    def check_if_letters_in_players_letters(self, letters_to_check):
-        for letter in letters_to_check:
-            if letter not in self.letters:
-                return False
-        return True
+    def get_not_user_letters(self, letters_to_check):
+        return [letter for letter in letters_to_check if letter not in self.letters]
 
     def remove_letters(self, letters_list):
         logger.debug(f"Removing letters from player's rack = {letters_list}")

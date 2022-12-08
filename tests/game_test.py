@@ -1,11 +1,8 @@
 import unittest
 
-from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody
+from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody, Country
 from scrabble_app.game_logic.exceptions import IncorrectMoveError, IncorrectWordError
 from scrabble_app.logger import logger
-
-game_token = "24m829t"
-
 
 def make_move(game, move):
     try:
@@ -17,32 +14,34 @@ def make_move(game, move):
 
 
 class Testing(unittest.TestCase):
-    # @unittest.skip("Letters replacement")
+    # @unittest.skip("")
     def test_game(self):
-        game = Game(debug=True, token=game_token, skip_word_validation=True)
+        game = Game(debug=True, token="ABC", skip_word_validation=True)
         make_move(game, "H:7:abdg")
         game.put_letter_on_board(8, 3, 'G')
         game.put_letter_on_board(7, 2, 'P')
         game.put_letter_on_board(9, 2, 'P')
         game.put_letter_on_board(4, 5, 'P')
         game.put_letter_on_board(4, 3, 'D')
-        # game.put_letter_on_board(8, 8, 'G')
         make_move(game, "8:A:abdgtep")
         make_move(game, "E:4:abdgtpe")
-        print(game.get_best_moves())
-        print(game.get_status_in_json())
+        best_moves = game.get_best_moves()
+        self.assertEqual("A:6:abated", best_moves[0]['move'])
 
-    @unittest.skip("Letters replacement")
-    def test_game_2(self):
-        game = Game(debug=True, token=game_token, skip_word_validation=True)
-        make_move(game, "7:G:ab")
-        make_move(game, "7:G:abp")
-        print(game.get_short_status_in_json())
-
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_letters_replacement(self):
-        game = Game(debug=True, token=game_token, skip_word_validation=True)
-        game.letters_replacement(ReplaceRequestBody(letters="GD", github_user="radosz99", issue_title=f"scrabble|replace|GD",issue_number="1") )
+        game = Game(debug=True, token="ABC", skip_word_validation=True, player_letters_mock=['G', 'D', 'C', 'R', 'B', 'C', 'H'])
+        game.letters_replacement(ReplaceRequestBody(letters="GD",
+                                                    github_user="radosz99",
+                                                    issue_title=f"scrabble|replace|GD",
+                                                    issue_number="1") )
+
+    def test_letters_replacement_in_spanish(self):
+        game = Game(country=Country.ES, debug=True, token="ABC", skip_word_validation=True, player_letters_mock=['CH', 'A', 'LL', 'RR', 'B', 'C', 'H'])
+        game.letters_replacement(ReplaceRequestBody(letters="LL",
+                                                    github_user="radosz99",
+                                                    issue_title=f"scrabble|replace|LL",
+                                                    issue_number="1") )
 
 
 if __name__ == "__main__":

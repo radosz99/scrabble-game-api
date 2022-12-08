@@ -2,6 +2,7 @@ import os
 
 from scrabble_app.game_logic.move_parser import Move, Replace
 from scrabble_app.logger import logger
+from scrabble_app.game_logic import exceptions as exc
 
 
 def save_readme_for_game(game, repository_path):
@@ -17,7 +18,6 @@ def save_readme_for_game(game, repository_path):
 
 
 def get_readme_for_game(game, repository_path):
-    get_best_moves_table_view(game)
     readme = """
 Play scrabble!
 ## Current status
@@ -83,8 +83,10 @@ def create_move_row(index, move, game):
     elif isinstance(move, Replace):
         return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [{move.github_user}](github.com/radosz99) |"
 
+
 def convert_date_to_date_string(date):
     return date.strftime("%m/%d/%Y, %H:%M:%S")
+
 
 def get_player_name_via_id(game, id):
     return game.players[id].name
@@ -99,9 +101,13 @@ def get_player_score_row(index, player_name, points):
 
 
 def get_best_moves_table_view(game):
-    best_moves = game.get_best_moves()
-    table_view = [create_best_move_row(index + 1, move) for index, move in enumerate(best_moves)]
-    return table_view
+    try:
+        best_moves = game.get_best_moves()
+        table_view = [create_best_move_row(index + 1, move) for index, move in enumerate(best_moves)]
+        return table_view
+    except exc.InternalConnectionError as e:
+        logger.debug(f"Best moves cannot be fetched - {str(e)}")
+        return []
 
 
 def create_best_move_row(index, move):

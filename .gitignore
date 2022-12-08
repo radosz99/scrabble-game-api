@@ -4,8 +4,7 @@ sandbox.py
 *.log
 resources/boards
 resources/racks
-index.md
-readme_*.txt
+resources/readme
 tests/results
 .idea/
 

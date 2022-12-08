@@ -90,7 +90,7 @@ async def get_possible_moves(game_token):
     try:
         moves = await run_in_threadpool(game.get_best_moves)
         return {"moves": moves}
-    except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
+    except exc.InternalConnectionError as e:
         msg = "Something wrong with internal server, try again later..."
         logger.debug(f"{msg} - {str(e)}")
         raise HTTPException(status_code=400, detail=msg)
@@ -106,7 +106,7 @@ async def make_move(game_token, details: MoveRequestBody):
         msg = f"Error has occurred = {str(e)}"
         logger.info(msg)
         raise HTTPException(status_code=400, detail=msg)
-    except (exc.NotParsableResponseError, exc.InternalConnectionError) as e:
+    except exc.InternalConnectionError as e:
         logger.debug(e)
         raise HTTPException(status_code=400, detail="Something wrong with internal server, try again later...")
 
