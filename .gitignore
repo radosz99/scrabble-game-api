@@ -6,7 +6,7 @@ resources/boards
 resources/racks
 index.md
 readme_*.txt
-
+tests/results
 .idea/
 
 # Created by .ignore support plugin (hsz.mobi)
