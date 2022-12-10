@@ -16,3 +16,4 @@ class NotParsableResponseError(Exception):
 
 class InternalConnectionError(Exception):
     pass
+

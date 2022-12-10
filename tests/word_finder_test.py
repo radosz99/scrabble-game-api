@@ -7,7 +7,7 @@ from scrabble_app.logger import logger
 
 
 class Testing(unittest.TestCase):
-    def test_amount_of_returned_letters(self):
+    def test_first(self):
         game = Game(token="XD", debug=True, player_letters_mock="OYPBAZE")
 
         board = [[" ", "x", " ", " ", "h", "e", "n", " ", "u", "t", " ", " ", "o", "n", " "],
@@ -30,6 +30,31 @@ class Testing(unittest.TestCase):
         board_instance.board = board
         game.board = board_instance
         move_string = "0:A:oxyphenbutazone"
+        move = move_parser.parse_move(move_string, Country.GB)
+        game.validate_move_legality(move)
+        new_words = find_new_words(board_instance, move)
+        new_words = ["".join(word) for word in new_words]
+        logger.info(f"New words = {new_words}")
+        try:
+            cheater_service.validate_words(new_words, country.name)
+        except exceptions.IncorrectWordError as e:
+            logger.info(e)
+        logger.info(f"Points: {move.evaluate()}")
+        self.assertEqual(len(board), 15)
+
+    def test_one_letter_move(self):
+        game = Game(token="XD", debug=True, player_letters_mock="BRIDE")
+
+        board = [[' ' for _ in range(15)] for _ in range(15)]
+        board[7][8] = 'R'
+        board[7][9] = 'I'
+        board[7][10] = 'D'
+        board[7][11] = 'E'
+        country = Country.GB
+        board_instance = Board()
+        board_instance.board = board
+        game.board = board_instance
+        move_string = "7:H:BRIDE"
         move = move_parser.parse_move(move_string, Country.GB)
         game.validate_move_legality(move)
         new_words = find_new_words(board_instance, move)

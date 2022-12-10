@@ -38,6 +38,8 @@ class Country(Enum):
     GB = 1
     PL = 2
     ES = 3
+    DE = 4
+    FR = 5
 
 
 class Game:
@@ -237,8 +239,7 @@ class Game:
     def get_winner(self):
         highest_score = 0
         player_id = None
-        # TODO: read rules of counting points and update accordingly- http://www.pfs.org.pl/regulaminy.php
-        # TODO: add skipping mechanism accordingly
+        # TODO: read rules of counting points and update accordingly- http://www.pfs.org.pl/regulaminy.php and add skipping mechanism accordingly
         for player in self.players.values():
             if player.points > highest_score:
                 player_id = player.id
@@ -301,7 +302,10 @@ class LettersBank:
     def __init__(self, country: Country):
         self.letters = []
         self.country = country
-        occurrences = utils.occurrences[country.name]
+        try:
+            occurrences = utils.occurrences[country.name]
+        except KeyError:
+            raise NotImplementedError(f"Support for {country.name} will be implemented soon")
         for key, value in occurrences.items():
             self.letters.extend([key for _ in range(value)])
 

@@ -39,9 +39,13 @@ def get_country_via_abbreviation(abbreviation):
 async def initialize_game(country):
     # TODO: add request body with players
     game_token = token_generator.generate(length=12)
-    game = Game(token=game_token, country=get_country_via_abbreviation(country))
-    games.append(game)
-    return {"game_token": game_token, "detail": f"New game has been initialized for country = {country}"}
+    try:
+        game = Game(token=game_token, country=get_country_via_abbreviation(country))
+        games.append(game)
+        return {"game_token": game_token, "detail": f"New game has been initialized for country = {country}"}
+    except NotImplementedError as e:
+        logger.debug(e)
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.get("/status/{game_token}")

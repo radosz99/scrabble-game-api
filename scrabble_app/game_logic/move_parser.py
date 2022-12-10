@@ -55,6 +55,7 @@ class Replace:
         self.letters_to_replace = letters
         self.new_letters = None
         self.player_id = None
+        self.points = 0
 
 
 class Move:
