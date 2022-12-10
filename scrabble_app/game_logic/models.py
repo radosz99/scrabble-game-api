@@ -207,6 +207,7 @@ class Game:
             move.new_letters = "".join(new_letters)
             self.switch_turn()
             move.valid = True
+            self.last_move_timestamp = datetime.now()
             move.player_id = player.id
             self.update_images()
             self.first_turn = False
