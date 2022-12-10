@@ -114,7 +114,7 @@ Are you sure? :smiling_imp: :smiling_imp: :smiling_imp:
     return readme
 
 
-def get_moves_table_view(game)
+def get_moves_table_view(game):
     table_view = [create_move_row(index, move, game) for index, move in enumerate(game.moves)]
     table_view.reverse()  # sorting from latest
     return table_view
