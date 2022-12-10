@@ -37,8 +37,9 @@ Play in Github Scrabble Tournament! Make moves by creating issues according to t
     readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png)," \
               f"\n - Game is {game.status.name.replace('_', ' ')}," \
               f"\n - Has begun - {convert_date_to_date_string(game.initialize_timestamp)}," \
-              f"\n - Last move has been made - {convert_date_to_date_string(game.last_move_timestamp)}, " \
-              f"\n - Total moves: {len(game.moves)}"
+              f"\n - Total moves: {len(game.moves)},"
+    if game.moves:
+        f"\n - Last move has been made - {convert_date_to_date_string(game.last_move_timestamp)}."
     readme += """
 ### Game score
 | Player name | Points |
@@ -113,6 +114,7 @@ Are you sure? :smiling_imp: :smiling_imp: :smiling_imp:
 
 
 def get_moves_table_view(game):
+    logger.info(f"Moves = {game.moves}")
     table_view = [create_move_row(index, move, game) for index, move in enumerate(game.moves)]
     table_view.reverse()  # sorting from latest
     return table_view
