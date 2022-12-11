@@ -6,6 +6,7 @@ from scrabble_app.game_logic.move_parser import Move, Replace, Skip
 from scrabble_app.logger import logger
 from scrabble_app.game_logic import exceptions as exc
 from scrabble_app.game_logic.models import Country, Game, GameStatus
+from scrabble_app.constants import GITHUB_REPO
 
 
 def save_readme_for_game(game: Game, repository_path):
@@ -55,7 +56,7 @@ Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
 
 ## Current game status
 """
-    readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png),"
+    readme += f" - Language - ![](https://raw.githubusercontent.com/{GITHUB_REPO}/main/flags/{game.country.name}.png),"
     readme += f"\n - Game is **{game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''}**,"
     readme += f"\n - Has begun - *{convert_date_to_date_string(game.initialize_timestamp)}*,"
     readme += f"\n - Number of remaining letters: {len(game.letters_bank.letters)},"
@@ -149,7 +150,7 @@ def get_countries_table_view():
 
 
 def create_country_row(country_name):
-    return f"\n - [{country_name}]({get_issue_url_for_init(country_name)})  ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{country_name}.png)"
+    return f"\n - [{country_name}]({get_issue_url_for_init(country_name)})  ![](https://raw.githubusercontent.com/{GITHUB_REPO}/main/flags/{country_name}.png)"
 
 
 def create_move_row(index, move, game):
@@ -219,7 +220,7 @@ def get_issue_url_for_move(move):
 
 
 def get_issue_url(title):
-    return f"https://github.com/radosz99/radosz99/issues/new?title={replace_colons_and_vertical_lines(title)}" \
+    return f"https://github.com/{GITHUB_REPO}/issues/new?title={replace_colons_and_vertical_lines(title)}" \
            f"&body=Just+push+%27Submit+new+issue%27+or+update+with+your+move"
 
 
