@@ -30,6 +30,21 @@ Play in Github Scrabble Tournament and make moves by creating issues according t
         countries_table_view = get_countries_table_view()
         for row in countries_table_view:
             readme += row
+    player_letters = ''.join(game.get_letters_from_player_with_turn())
+    replace_string = f"scrabble|replace|{player_letters}"
+    readme += "\n\n## Rules"
+    readme += f"\n - inserting letters - raise an issue with title `scrabble|move|X:Y:WORD`, where `X` and `Y` are " \
+              f"coordinates, and `WORD` is string containing player's letter and letters from board, " \
+              f"for example [scrabble&#124;move&#124;7:A:BRIDE]({get_issue_url('scrabble|move|7:A:BRIDE')}) if you " \
+              f"want to create word `BRIDE` in 7th row starting from column A (RIDE is already on the board) and B " \
+              f"is in player's letters. Number should go first if word is horizontal (7:A) or second if word is " \
+              f"vertical (A:7). For more details see [notation system](https://en.wikipedia.org/wiki/Scrabble" \
+              f"#Notation_system) and examples in [cheater section](#cheater),"
+    readme += f"\n - exchanging letters - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
+              f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
+              f"{player_letters}]({get_issue_url(replace_string)}),"
+    readme += f"\n - skipping turn - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
+              f"({get_issue_url('scrabble|skip')})."
     readme += """
 
 ## Current status
@@ -56,23 +71,8 @@ Play in Github Scrabble Tournament and make moves by creating issues according t
     readme += f"<img src=\"https://raw.githubusercontent.com/{repository_path}/main/rack.png\" width=30% alt=\"Img\"/>"
     readme += """
 </p>
-"""
-    player_letters = ''.join(game.get_letters_from_player_with_turn())
-    replace_string = f"scrabble|replace|{player_letters}"
-    readme += "\n## Moving rules"
-    readme += f"\n - inserting letters - raise an issue with title `scrabble|move|X:Y:WORD`, where `X` and `Y` are " \
-              f"coordinates, and `WORD` is string containing player's letter and letters from board, " \
-              f"for example [scrabble&#124;move&#124;7:A:BRIDE]({get_issue_url('scrabble|move|7:A:BRIDE')}) if you " \
-              f"want to create word `BRIDE` in 7th row starting from column A (RIDE is already on the board) and B " \
-              f"is in player's letters. Number should go first if word is horizontal (7:A) or second if word is " \
-              f"vertical (A:7). For more details see [notation system](https://en.wikipedia.org/wiki/Scrabble" \
-              f"#Notation_system) and examples in [cheater section](#cheater),"
-    readme += f"\n - exchanging letters - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
-              f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
-              f"{player_letters}]({get_issue_url(replace_string)}),"
-    readme += f"\n - skipping turn - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
-              f"({get_issue_url('scrabble|skip')})."
-    readme += """
+
+Board:
 <p align="center">"""
     readme += f"\n<img src=\"https://raw.githubusercontent.com/{repository_path}/main/board.png\" width=60% alt=\"Img\"/>"
     readme += """
