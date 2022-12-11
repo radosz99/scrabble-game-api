@@ -71,7 +71,7 @@ Play in Github Scrabble Tournament and make moves by creating issues according t
               f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
               f"{player_letters}]({get_issue_url(replace_string)}),"
     readme += f"\n - skipping turn - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
-              f"({get_issue_url('scrabble|skip')}."
+              f"({get_issue_url('scrabble|skip')})."
     readme += """
 <p align="center">"""
     readme += f"\n<img src=\"https://raw.githubusercontent.com/{repository_path}/main/board.png\" width=60% alt=\"Img\"/>"
