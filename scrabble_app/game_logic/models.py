@@ -141,15 +141,15 @@ class Game:
         if self.empty_board():
             if not contains_user_letters:
                 logger.debug("No user letters")
-                raise exc.IncorrectMoveError("Move should contain both - player and board letters (at least 1)")
+                raise exc.IncorrectMoveError("Move should contain player's letters (at least 2)")
             if not middle_filled:
                 logger.debug("No letter with the middle coordinates - 7,7")
                 raise exc.IncorrectMoveError("Move should contain letter in the middle of the board")
         else:
             if not contains_board_letters or not contains_user_letters:
                 logger.debug(f"Wrong letters, contains board letters = {contains_board_letters}, player letters = "
-                            f"{contains_user_letters}")
-                raise exc.IncorrectMoveError("Move should contain both - player and board letters (at least 1)")
+                             f"{contains_user_letters}")
+                raise exc.IncorrectMoveError("Move should contain both - player's and board letters (at least 1)")
 
     def validate_words_from_move(self, move):
         list_of_words = self.find_new_words(move)

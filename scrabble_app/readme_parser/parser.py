@@ -69,8 +69,8 @@ Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
     score_view = get_game_score_table_view(game)
     for row in score_view:
         readme += row
-    readme += "\n\nNow it is "
-    readme += f"{game.players[game.whose_turn].name}'s"
+    readme += "\n\nNow it is **"
+    readme += f"{game.players[game.whose_turn].name}'s**"
     readme += """ turn, letters in rack:
 <p align="center">
     """
