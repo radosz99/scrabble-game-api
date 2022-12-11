@@ -49,8 +49,8 @@ Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
     readme += f"\n - **exchanging letters** - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
               f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
               f"{player_letters}]({get_issue_url(replace_string)}), works only if letters number in letters bag is greater than 6,"
-    readme += f"\n - **skipping turn** - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
-              f"({get_issue_url('scrabble|skip')}), keep in mind that if each player skips two times in a row then the game is over,"
+    readme += f"\n - **skipping turn** - raise an issue with title `scrabble|skip` ([scrabble&#124;skip]" \
+              f"({get_issue_url('scrabble|skip')})), keep in mind that if each player skips two times in a row then the game is over,"
     readme += """
 
 ## Current game status
@@ -58,8 +58,8 @@ Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
     readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png),"
     readme += f"\n - Game is **{game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''}**,"
     readme += f"\n - Has begun - *{convert_date_to_date_string(game.initialize_timestamp)}*,"
-    readme += f"\n - Number of remaining letters - {len(game.letters_bank.letters)},"
-    readme += f"\n - Total moves - {len(game.moves)},"
+    readme += f"\n - Number of remaining letters: {len(game.letters_bank.letters)},"
+    readme += f"\n - Total moves: {len(game.moves)},"
     if game.moves:
         readme += f"\n - Last move has been made - *{convert_date_to_date_string(game.last_move_timestamp)}*."
     readme += """
