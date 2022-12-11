@@ -50,15 +50,16 @@ Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
               f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
               f"{player_letters}]({get_issue_url(replace_string)}), works only if letters number in letters bag is greater than 6,"
     readme += f"\n - **skipping turn** - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
-              f"({get_issue_url('scrabble|skip')}, keep in mind that if each player skips two times in a row then the game is over,"
+              f"({get_issue_url('scrabble|skip')}), keep in mind that if each player skips two times in a row then the game is over,"
     readme += """
 
 ## Current game status
 """
     readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png),"
     readme += f"\n - Game is **{game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''}**,"
-    readme += f"\n - Has begun - *{convert_date_to_date_string(game.initialize_timestamp)}*," \
-              f"\n - Total moves - {len(game.moves)},"
+    readme += f"\n - Has begun - *{convert_date_to_date_string(game.initialize_timestamp)}*,"
+    readme += f"\n - Number of remaining letters - {len(game.letters_bank.letters)},"
+    readme += f"\n - Total moves - {len(game.moves)},"
     if game.moves:
         readme += f"\n - Last move has been made - *{convert_date_to_date_string(game.last_move_timestamp)}*."
     readme += """
@@ -155,7 +156,7 @@ def create_move_row(index, move, game):
     if isinstance(move, Move):
         return f"\n|{index}| INSERT | {move.move_string} | {move.list_of_words} | {convert_date_to_date_string(move.creation_date)} | {move.points} | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
     elif isinstance(move, Replace):
-        return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
+        return f"\n|{index}| REPLACE | {move.letters_to_replace} | {[*move.new_letters]} | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
     elif isinstance(move, Skip):
         return f"\n|{index}| SKIP |  |  | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
 
@@ -194,7 +195,7 @@ def get_player_score_row(player_name, points):
 
 def get_best_moves_table_view(game):
     try:
-        best_moves = game.get_best_moves()
+        best_moves = game.get_best_moves()[:10]
         table_view = [create_best_move_row(index + 1, move) for index, move in enumerate(best_moves)]
         return table_view
     except exc.InternalConnectionError as e:

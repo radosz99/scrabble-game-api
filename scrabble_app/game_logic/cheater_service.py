@@ -30,7 +30,7 @@ def get_incorrect_words_from_response(response):
 
 
 def get_best_moves_from_response(response):
-    return [parse_move_from_response(move) for move in response['moves'][:10]]
+    return [parse_move_from_response(move) for move in response['moves']]
 
 
 def get_best_moves(letters, board, country):
