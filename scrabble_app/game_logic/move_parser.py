@@ -45,6 +45,16 @@ def parse_move(move_string, country):
     return Move(x_coord, y_coord, letters_list, orientation, move_string, country)
 
 
+class Skip:
+    def __init__(self, github_user, issue_title, issue_number):
+        self.github_user = github_user
+        self.issue_number = issue_number
+        self.issue_title = issue_title
+        self.creation_date = datetime.now()
+        self.player_id = None
+        self.points = 0
+
+
 class Replace:
     def __init__(self, letters, github_user, issue_title, issue_number):
         self.valid = False

@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from starlette.concurrency import run_in_threadpool
 
-from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody, Country
+from scrabble_app.game_logic.models import Game, MoveRequestBody, ReplaceRequestBody, Country, BaseRequestBody
 from scrabble_app.game_logic import exceptions as exc
 from scrabble_app.logger import logger
 from scrabble_app.readme_parser import parser as readme_parser
@@ -37,7 +37,7 @@ def get_country_via_abbreviation(abbreviation):
 
 @app.get("/initialize/{country}")
 async def initialize_game(country):
-    # TODO: add request body with players
+    # TODO: add request body with players & extend to max 4 players
     game_token = token_generator.generate(length=12)
     try:
         game = Game(token=game_token, country=get_country_via_abbreviation(country))
@@ -84,8 +84,22 @@ async def replace_player_letters(game_token, details: ReplaceRequestBody):
     try:
         response = game.letters_replacement(details)
         return {"detail": response}
-    except exc.IncorrectMoveError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except (exc.IncorrectMoveError, exc.GameIsOverError, exc.NotEnoughLettersInRackError) as e:
+        msg = f"Error has occurred = {str(e)}"
+        logger.info(msg)
+        raise HTTPException(status_code=400, detail=msg)
+
+
+@app.post("/skip/{game_token}")
+async def skip_turn(game_token, details: BaseRequestBody):
+    game = get_game_via_token_or_throw_error(game_token)
+    try:
+        response = game.skip_turn(details)
+        return {"detail": response}
+    except exc.GameIsOverError as e:
+        msg = f"Error has occurred = {str(e)}"
+        logger.info(msg)
+        raise HTTPException(status_code=400, detail=msg)
 
 
 @app.get("/best-moves/{game_token}")

@@ -58,7 +58,6 @@ class Game:
             player_letters_mock_1 = player_letters_mock
             player_letters_mock_2 = player_letters_mock
 
-        # TODO: extend to max 4 players
         self.players = {
             0: Player("Tom", 0, player_letters_mock_1 if debug else self.letters_bank.get_x_letters(7)),
             1: Player("Jerry", 1, player_letters_mock_2 if debug else self.letters_bank.get_x_letters(7))
@@ -70,15 +69,17 @@ class Game:
         self.initialize_timestamp = datetime.now()
         self.last_move_timestamp = None
         self.status = GameStatus.IN_PROGRESS
+        self.finished_status_reason = ""
         self.winner_id = None
         self.create_images()
         self.moves = []
 
     def make_move(self, details):
         move_string = details.move
-
         if self.status == GameStatus.FINISHED:
-            raise exc.GameIsOverError(f"Game is over, winner is = {self.players[self.winner_id].name}, points = {self.players[self.winner_id].points}")
+            raise exc.GameIsOverError(
+                f"Game is over, winner is = {self.players[self.winner_id].name}, "
+                f"points = {self.players[self.winner_id].points}{self.finished_status_reason}")
         move = move_parser.parse_move(move_string, self.country)
         move.github_user = details.github_user
         move.issue_title = details.issue_title
@@ -169,7 +170,6 @@ class Game:
 
     def proceed_after_turn(self, move):
         player = self.get_current_player()
-
         if move.valid:
             if not self.debug:
                 self.update_player_letters(player, move)
@@ -195,7 +195,13 @@ class Game:
         player.give_letters(self.letters_bank.get_x_letters(letters_to_give))
 
     def letters_replacement(self, details):
-        logger.info(f"Replacing letters with details = {details}")
+        logger.info(f"Replacing letters with details = {details}, player = {self.get_current_player()}")
+        if self.status == GameStatus.FINISHED:
+            raise exc.GameIsOverError(
+                f"Game is over, winner is = {self.players[self.winner_id].name}, "
+                f"points = {self.players[self.winner_id].points}{self.finished_status_reason}")
+        if not self.letters_bank.enough_letters_for_exchange():
+            raise exc.NotEnoughLettersInRackError("There is not enough (< 7) tiles available, skip or make a move")
         letters_to_replace = utils.parse_letters_string_to_list(self.country, details.letters)
         player = self.get_current_player()
         illegal_letters = player.get_not_user_letters(letters_to_replace)
@@ -211,12 +217,33 @@ class Game:
             move.player_id = player.id
             self.update_images()
             self.first_turn = False
-            msg = f"New players letters = {new_letters}, old = {letters_to_replace}, current letters = {player.get_letters()}"
+            msg = f"New players letters {new_letters} have replaced = {letters_to_replace}, current letters = {player.get_letters()}"
             logger.info(msg)
             self.moves.append(move)
             return msg
         else:
             raise exc.IncorrectMoveError(f"Invalid letters to replace ({illegal_letters}), players letters = {player.get_letters()}")
+
+    def skip_turn(self, details):
+        logger.info(f"Skipping turn, player = {self.get_current_player()}")
+        if self.status == GameStatus.FINISHED:
+            raise exc.GameIsOverError(
+                f"Game is over, winner is = {self.players[self.winner_id].name}, "
+                f"points = {self.players[self.winner_id].points}, {self.finished_status_reason}")
+        player = self.get_current_player()
+        move = move_parser.Skip(details.github_user, details.issue_title, details.issue_number)
+        self.switch_turn()
+        self.last_move_timestamp = datetime.now()
+        move.player_id = player.id
+        self.moves.append(move)
+        self.update_images()
+        self.first_turn = False
+        msg = f"{player.name} has skipped, now it is {self.get_current_player().name}'s turn"
+        logger.info(msg)
+        if self.check_if_game_is_over():
+            self.status = GameStatus.FINISHED
+            msg += f", game is over, winner = {self.players[self.winner_id].name}!"
+        return msg
 
     def get_current_player(self):
         logger.debug(f"Getting current player with id = {self.whose_turn}")
@@ -225,23 +252,42 @@ class Game:
     def check_if_game_is_over(self):
         logger.info("Checking if game has finished")
         if self.letters_bank.empty():
-            logger.debug("Empty letters bank, checking players letters")
+            logger.info("Empty letters bank, checking players letters")
             for player in self.players.values():
                 logger.debug(f"Checking player {player.name}, has letters = {player.has_letters()}, letters = {player.get_letters_string()}")
                 if not player.has_letters():
-                    logger.info("No letters, game is over")
+                    self.finished_status_reason = f", reason: {player.name} has got rid of all letters and no more " \
+                                                  f"letters are available in letter bag"
+                    logger.info(f"Player {player.id} has got rid off all letters, game is over")
                     self.winner_id = self.get_winner()
                     logger.info(f"Winner id = {self.winner_id}, points = {self.players[self.winner_id].points}")
                     return True
+        elif len(self.moves) >= 4 and all([isinstance(move, move_parser.Skip) for move in self.moves[(-2) * len(self.players):]]):
+            logger.info(f"Last {len(self.players)*2} moves are skips, game is over")
+            self.finished_status_reason = f", reason: all of the players have made 2 skips in a row"
+            self.winner_id = self.get_winner()
+            logger.info(f"Winner id = {self.winner_id}, points = {self.players[self.winner_id].points}")
+            return True
         else:
             logger.info("Game is still in progress")
             return False
 
     def get_winner(self):
-        highest_score = 0
+        highest_score = -9999
         player_id = None
-        # TODO: read rules of counting points and update accordingly- http://www.pfs.org.pl/regulaminy.php and add skipping mechanism accordingly
+        logger.info("Recalculating points...")
+        players_deltas = []
         for player in self.players.values():
+            delta = sum([utils.letters_values[self.country.name][letter] for letter in player.get_letters()])
+            logger.info(f"Delta for player {player.id} = {delta}, letters = {player.get_letters()}, points = {player.points}")
+            players_deltas.append(-delta)
+        logger.info(f"Players deltas before recalculation = {players_deltas}")
+        players_deltas = list(map(lambda x: -1 * sum(players_deltas) if x == 0 else x, players_deltas))
+        logger.info(f"Players deltas after recalculation = {players_deltas}")
+        # TODO: add tie logic
+        for player, delta in zip(self.players.values(), players_deltas):
+            player.points += delta
+            logger.info(f"Player {player.id} points after recalculation = {player.points}")
             if player.points > highest_score:
                 player_id = player.id
                 highest_score = player.points
@@ -315,6 +361,9 @@ class LettersBank:
 
     def __str__(self):
         return f"{len(self.letters)} letters = {self.letters}"
+
+    def enough_letters_for_exchange(self):
+        return len(self.letters) > 7
 
     def get_x_letters(self, number):
         chosen_letters = []

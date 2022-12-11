@@ -17,3 +17,6 @@ class NotParsableResponseError(Exception):
 class InternalConnectionError(Exception):
     pass
 
+
+class NotEnoughLettersInRackError(Exception):
+    pass

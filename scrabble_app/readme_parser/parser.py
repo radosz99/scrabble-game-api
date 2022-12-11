@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import os
 import pytz
 
-from scrabble_app.game_logic.move_parser import Move, Replace
+from scrabble_app.game_logic.move_parser import Move, Replace, Skip
 from scrabble_app.logger import logger
 from scrabble_app.game_logic import exceptions as exc
 from scrabble_app.game_logic.models import Country, Game, GameStatus
@@ -22,8 +22,8 @@ def save_readme_for_game(game: Game, repository_path):
 
 def get_readme_for_game(game: Game, repository_path):
     readme = """
-# Scrabble Tournament
-Play in Github Scrabble Tournament! Make moves by creating issues according to the rules!
+# Github Scrabble Tournament
+Play in Github Scrabble Tournament and make moves by creating issues according to the rules!
  """
     if game.status in [GameStatus.FINISHED, GameStatus.IN_PROGRESS]:
         readme += "\nStart new game:\n"
@@ -34,9 +34,9 @@ Play in Github Scrabble Tournament! Make moves by creating issues according to t
 
 ## Current status
 """
-    readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png)," \
-              f"\n - Game is {game.status.name.replace('_', ' ')}," \
-              f"\n - Has begun - {convert_date_to_date_string(game.initialize_timestamp)}," \
+    readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png),"
+    readme += f"\n - Game is {game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''},"
+    readme += f"\n - Has begun - {convert_date_to_date_string(game.initialize_timestamp)}," \
               f"\n - Total moves: {len(game.moves)},"
     if game.moves:
         readme += f"\n - Last move has been made - {convert_date_to_date_string(game.last_move_timestamp)}."
@@ -64,12 +64,14 @@ Play in Github Scrabble Tournament! Make moves by creating issues according to t
               f"coordinates, and `WORD` is string containing player's letter and letters from board, " \
               f"for example [scrabble&#124;move&#124;7:A:BRIDE]({get_issue_url('scrabble|move|7:A:BRIDE')}) if you " \
               f"want to create word `BRIDE` in 7th row starting from column A (RIDE is already on the board) and B " \
-              f"is in player's letters. Number should go first if word is in a row (7:A) or second if word is in a " \
-              f"column (A:7). For more details see [notation system](https://en.wikipedia.org/wiki/Scrabble" \
+              f"is in player's letters. Number should go first if word is horizontal (7:A) or second if word is " \
+              f"vertical (A:7). For more details see [notation system](https://en.wikipedia.org/wiki/Scrabble" \
               f"#Notation_system) and examples in [cheater section](#cheater),"
-    readme += f"\n - replacing letters - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
-              f"string of letters you want to replace, for example [scrabble&#124;replace&#124;" \
-              f"{player_letters}]({get_issue_url(replace_string)}.)"
+    readme += f"\n - exchanging letters - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
+              f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
+              f"{player_letters}]({get_issue_url(replace_string)}),"
+    readme += f"\n - skipping turn - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
+              f"({get_issue_url('scrabble|skip')}."
     readme += """
 <p align="center">"""
     readme += f"\n<img src=\"https://raw.githubusercontent.com/{repository_path}/main/board.png\" width=60% alt=\"Img\"/>"
@@ -147,6 +149,8 @@ def create_move_row(index, move, game):
         return f"\n|{index}| INSERT | {move.move_string} | {move.list_of_words} | {convert_date_to_date_string(move.creation_date)} | {move.points} | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
     elif isinstance(move, Replace):
         return f"\n|{index}| REPLACE | {move.letters_to_replace} | {move.new_letters} | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
+    elif isinstance(move, Skip):
+        return f"\n|{index}| SKIP |  |  | {convert_date_to_date_string(move.creation_date)} | 0 | {get_player_name_via_id(game, move.player_id)} | [@{move.github_user}](github.com/{move.github_user}) |"
 
 
 def convert_date_to_date_string(date):

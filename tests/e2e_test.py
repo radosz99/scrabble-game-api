@@ -33,7 +33,7 @@ def save_test_data_to_directory(game_status, readme, token, country):
 
 
 def test_e2e():
-    country = Country.PL
+    country = Country.FR
     response = client.get(f"/initialize/{country.name}")
     response_json = response.json()
     logger.info(response_json)
@@ -45,14 +45,14 @@ def test_e2e():
     while True:
         response = client.get(f"/best-moves/{token}")
         response_json = response.json()
-
+        logger.info(response_json)
         assert 'moves' in response_json
         assert response.status_code == 200
 
         moves = response_json['moves']
         if not moves:
-            logger.info("No moves")
-            break
+            response = client.get(f"/skip/{token}")
+            assert response.status_code == 200
         first_move = moves[0]
         move_string = first_move['move']
         assert ':' in move_string
