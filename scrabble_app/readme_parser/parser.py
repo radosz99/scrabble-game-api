@@ -22,39 +22,45 @@ def save_readme_for_game(game: Game, repository_path):
 
 def get_readme_for_game(game: Game, repository_path):
     readme = """
-# Github Scrabble Tournament
-Play in Github Scrabble Tournament and make moves by creating issues according to the rules!
+# GitHub Scrabble Tournament
+Play in GitHub Scrabble Tournament and make moves by creating issues according to the rules.    
+Inspired by [Tim's Community Chess Tournament](https://github.com/timburgan/).
+
+<details>
+  <summary>Start new game</summary>
+  
  """
-    if game.status in [GameStatus.FINISHED, GameStatus.IN_PROGRESS]:
-        readme += "\nStart new game:\n"
-        countries_table_view = get_countries_table_view()
-        for row in countries_table_view:
-            readme += row
+    countries_table_view = get_countries_table_view()
+    for row in countries_table_view:
+        readme += row
+    readme += """
+</details>
+        """
     player_letters = ''.join(game.get_letters_from_player_with_turn())
     replace_string = f"scrabble|replace|{player_letters}"
     readme += "\n\n## Rules"
-    readme += f"\n - inserting letters - raise an issue with title `scrabble|move|X:Y:WORD`, where `X` and `Y` are " \
+    readme += f"\n - **inserting letters** - raise an issue with title `scrabble|move|X:Y:WORD`, where `X` and `Y` are " \
               f"coordinates, and `WORD` is string containing player's letter and letters from board, " \
               f"for example [scrabble&#124;move&#124;7:A:BRIDE]({get_issue_url('scrabble|move|7:A:BRIDE')}) if you " \
               f"want to create word `BRIDE` in 7th row starting from column A (RIDE is already on the board) and B " \
               f"is in player's letters. Number should go first if word is horizontal (7:A) or second if word is " \
               f"vertical (A:7). For more details see [notation system](https://en.wikipedia.org/wiki/Scrabble" \
               f"#Notation_system) and examples in [cheater section](#cheater),"
-    readme += f"\n - exchanging letters - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
+    readme += f"\n - **exchanging letters** - raise an issue with title `scrabble|replace|LETTERS`, where `LETTERS` is " \
               f"string of letters you want to exchange, for example [scrabble&#124;replace&#124;" \
-              f"{player_letters}]({get_issue_url(replace_string)}),"
-    readme += f"\n - skipping turn - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
-              f"({get_issue_url('scrabble|skip')})."
+              f"{player_letters}]({get_issue_url(replace_string)}), works only if letters number in letters bag is greater than 6,"
+    readme += f"\n - **skipping turn** - raise an issue with title `scrabble|skip`, for example [scrabble&#124;skip]" \
+              f"({get_issue_url('scrabble|skip')}, keep in mind that if each player skips two times in a row then the game is over,"
     readme += """
 
-## Current status
+## Current game status
 """
     readme += f" - Language - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{game.country.name}.png),"
-    readme += f"\n - Game is {game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''},"
-    readme += f"\n - Has begun - {convert_date_to_date_string(game.initialize_timestamp)}," \
-              f"\n - Total moves: {len(game.moves)},"
+    readme += f"\n - Game is **{game.status.name.replace('_', ' ')}{game.finished_status_reason if game.status == GameStatus.FINISHED else ''}**,"
+    readme += f"\n - Has begun - *{convert_date_to_date_string(game.initialize_timestamp)}*," \
+              f"\n - Total moves - {len(game.moves)},"
     if game.moves:
-        readme += f"\n - Last move has been made - {convert_date_to_date_string(game.last_move_timestamp)}."
+        readme += f"\n - Last move has been made - *{convert_date_to_date_string(game.last_move_timestamp)}*."
     readme += """
     
 ### Game score
@@ -78,7 +84,7 @@ Board:
     readme += """
 </p>
     
-## Leaderboard
+## User leaderboard
 | Moves | Who | Points |
 | - | - | - |"""
     leaderboard_table_view = get_leaderboard_table_view(game)
@@ -88,12 +94,12 @@ Board:
 
 <a name="cheater"></a>
 ## Cheater section  
-Are you sure? :smiling_imp: :smiling_imp: :smiling_imp:
+Try out my algorithm and check the moves that were found based on the state of the board and rack. :cowboy_hat_face:
 <details>
-  <summary>Spoiler warning!</summary>
+  <summary>Reveal some fancy moves :)</summary>
   
-  | Id | Move | Issue link | Points |
-  | - | - | - | - |  """
+  | Id | Move | Points |
+  | - | - | - |  """
     best_moves_table_view = get_best_moves_table_view(game)
     for row in best_moves_table_view:
         readme += row
@@ -103,7 +109,8 @@ Are you sure? :smiling_imp: :smiling_imp: :smiling_imp:
     readme += """
 ## Latest moves
 <details>
-  <summary>Show latest 10 moves</summary>
+<summary>Show 10 latest moves</summary>
+  
   
   | Id | Type | Move / Letters to replace | Created words / New letters | Date | Points | Player | Who |
   | - | - | - | - | - | - | - | - |"""
@@ -141,7 +148,7 @@ def get_countries_table_view():
 
 
 def create_country_row(country_name):
-    return f"\n - ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{country_name}.png)  [scrabble&#124;init&#124;{country_name}]({get_issue_url_for_init(country_name)})"
+    return f"\n - [{country_name}]({get_issue_url_for_init(country_name)})  ![](https://raw.githubusercontent.com/radosz99/radosz99/main/flags/{country_name}.png)"
 
 
 def create_move_row(index, move, game):
@@ -197,7 +204,7 @@ def get_best_moves_table_view(game):
 
 def create_best_move_row(index, move):
     move_string = move['move']
-    return f"\n|{index}| {move_string} | [scrabble&#124;move&#124;{move_string}]({get_issue_url_for_move(move['move'])}) | {move['points']} "
+    return f"\n|{index} | [{move_string}]({get_issue_url_for_move(move['move'])}) | {move['points']} "
 
 
 def get_issue_url_for_init(country_name):
@@ -212,7 +219,7 @@ def get_issue_url_for_move(move):
 
 def get_issue_url(title):
     return f"https://github.com/radosz99/radosz99/issues/new?title={replace_colons_and_vertical_lines(title)}" \
-           f"&body=Just+push+%27Submit+new+issue%27+or+update+with+your+move."
+           f"&body=Just+push+%27Submit+new+issue%27+or+update+with+your+move"
 
 
 def replace_colons_and_vertical_lines(string):
