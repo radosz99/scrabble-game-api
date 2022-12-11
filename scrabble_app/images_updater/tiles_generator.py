@@ -25,7 +25,7 @@ letter_coordinates_dict = {
 
 def generate_letter_tile_image(letter, points, country):
     font = fnt_letter if len(letter) == 1 else narrow_fnt_letter
-    letter_coordinates = letter_coordinates_dict[country] if len(letter) == 1 else (1, 4)
+    letter_coordinates = letter_coordinates_dict[country] if len(letter) == 1 else (1, 7)
     points_coordinates = (31, 30) if len(letter) == 1 else (37, 30)
     img = Image.open(BACKGROUND_TILE_PATH).convert("RGBA")
     d = ImageDraw.Draw(img)
